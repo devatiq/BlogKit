@@ -38,7 +38,7 @@ class Main extends Widget_Base
 
     public function get_style_depends()
     {
-        return ['blogkit-style-2'];
+        return ['blogkit-style-2', 'blogkit-responsive'];
     }
 
     /**

@@ -1,22 +1,35 @@
 /* Large devices (desktops, less than 1200px) */
-@media (max-width: 1199.98px) {
-  .blogkit-fs-grid {
-    grid-template-columns: 1fr;
-    max-width: 1000px;
-  }
+@media (max-width: 1100px) {
 }
 
 /* Medium devices (tablets, less than 992px) */
 @media (max-width: 991.98px) {
-  /* Add styles for medium devices here */
 }
 
 /* Small devices (landscape phones, less than 768px) */
 @media (max-width: 767.98px) {
-  /* Add styles for small devices here */
+  .blogkit-fs-grid {
+    grid-template-columns: 1fr;
+    max-width: 1000px;
+  }
+  .blogkit-fs-sidebar {
+    max-width: 100%;
+  }
 }
 
 /* Extra small devices (portrait phones, less than 576px) */
 @media (max-width: 575.98px) {
-  /* Add styles for extra small devices here */
+  .blogkit-fs-featured-content {
+    min-height: 130px;
+  }
+  .blogkit-fs-title a {
+    font-size: 18px;
+    line-height: 1.3em;
+  }
+  h2.blogkit-fs-title {
+    line-height: 1.3em;
+    font-size: 18px;
+    text-align: center;
+    margin: 2px;
+  }
 }
