@@ -314,33 +314,27 @@
   display: grid;
 }
 
-.blogkit-card-grid-wrapper .card-header {
+.blogkit-card-grid-wrapper .blogkit-card-grid-header {
   position: relative;
 }
 
-.blogkit-card-grid-wrapper .category {
+.blogkit-card-grid-wrapper .blogkit-card-grid-category {
   position: absolute;
-  color: white;
-  font-size: 0.75rem;
-  font-weight: 600;
-  padding: 4px 12px;
-  border-radius: 12px;
   top: 16px;
   left: 16px;
-  background-color: #1cb458;
 }
 
-.blogkit-card-grid-wrapper .card {
+.blogkit-card-grid-wrapper .blogkit-card-grid-item {
   overflow: hidden;
 }
-.blogkit-card-grid-wrapper .meta {
+.blogkit-card-grid-wrapper .blogkit-card-grid-meta {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   gap: 10px;
 }
 
-.blogkit-card-grid-wrapper .meta span{
+.blogkit-card-grid-wrapper .blogkit-card-grid-meta span{
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -349,25 +343,23 @@
 }
 
 
-
-
-.blogkit-card-grid-wrapper .meta img {
+.blogkit-card-grid-wrapper .blogkit-card-grid-meta img {
   width: 24px;
   height: 24px;
   border-radius: 50%;
 }
-.blogkit-card-grid-wrapper .meta svg {
+.blogkit-card-grid-wrapper .blogkit-card-grid-meta svg {
   width: 15px;
   height: 15px;
 }
 
-.blogkit-card-grid-wrapper .card-title {
+.blogkit-card-grid-wrapper .blogkit-card-grid-title {
   margin-bottom: 10px;
 }
-.blogkit-card-grid-wrapper .card-body {
-  padding: 20px;
+.blogkit-card-grid-wrapper .blogkit-card-grid-body {
+  /* padding: 20px; */
 }
-.blogkit-card-grid-wrapper .card-body .card-excerpt {
+.blogkit-card-grid-wrapper .blogkit-card-grid-body .blogkit-card-grid-excerpt {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   overflow: hidden;
