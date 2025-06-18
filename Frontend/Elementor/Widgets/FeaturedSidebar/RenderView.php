@@ -6,7 +6,8 @@ if (!defined('ABSPATH')) {
 // Featured Post Query
 $featured_query = new WP_Query([
     'post_type' => 'post',
-    'posts_per_page' => 1
+    'posts_per_page' => 1,
+    'offset' => 2
 ]);
 
 // Sidebar Posts Query
@@ -34,7 +35,7 @@ $sidebar_query = new WP_Query([
                     ?>
                     <h2 class="blogkit-fs-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
                     <div class="blogkit-fs-meta">
-                        <span class="blogkit-fs-author">BY <?php the_author(); ?></span>
+                        <span class="blogkit-fs-author"><?php echo esc_html__( 'BY', 'blogkit' ) . ' ' . get_the_author(); ?></span>
                         <span class="blogkit-fs-date"><?php echo get_the_date(); ?></span>
                     </div>
                 </div>

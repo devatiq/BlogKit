@@ -52,103 +52,115 @@
 Featured and Sidebar
 ------------------------------*/
 .blogkit-fs-widget {
-    padding: 30px 0;
-    color: #fff;
+  padding: 30px 0;
+  color: #fff;
 }
 
 .blogkit-fs-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    max-width: 1200px;
-    margin: 0 auto;
-    align-items: start;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  align-items: start;
 }
 
 .blogkit-fs-featured {
-    max-width: 720px;
-    width: 100%;
-    background: transparent;
-    border-radius: 8px;
-    overflow: hidden;
+  max-width: 720px;
+  width: 100%;
+  background: transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  max-height: 500px;
+  position: relative;
+  height: 100%;
 }
 
 .blogkit-fs-featured-thumb img {
-    width: 100%;
-    border-radius: 8px;
+  width: 100%;
+  border-radius: 8px;
+  height: 100%;
+  object-fit: cover;
 }
 
 .blogkit-fs-featured-content {
-    margin-top: -100px;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-    padding: 20px;
-    position: relative;
-    z-index: 2;
+  background: linear-gradient(to top, rgb(0 0 0 / 90%), transparent);
+  padding: 20px;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 200px;
+  position: absolute;
+  width: 100%;
+  bottom: 1px;
+  justify-content: center;
 }
 
 .blogkit-fs-category {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 4px 10px;
-    font-size: 12px;
-    border-radius: 4px;
-    margin-bottom: 10px;
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 4px 10px;
+  font-size: 12px;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
 
 .blogkit-fs-title a {
-    font-size: 24px;
-    font-weight: bold;
-    color: #fff;
-    text-decoration: none;
+  font-size: 24px;
+  font-weight: bold;
+  color: #fff;
+  text-decoration: none;
 }
 
 .blogkit-fs-meta {
-    font-size: 12px;
-    color: #ccc;
-    margin-top: 5px;
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 5px;
 }
 
 .blogkit-fs-sidebar {
-    max-width: 360px;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  max-width: 360px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .blogkit-fs-sidebar-item {
-    display: flex;
-    gap: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 10px;
-    background: #0d1117;
+  display: flex;
+  gap: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  background: #0d1117;
+  border-radius: 8px;
 }
 
 .blogkit-fs-sidebar-thumb img {
-    width: 70px;
-    height: 70px;
-    object-fit: cover;
-    border-radius: 4px;
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 4px;
 }
 
 .blogkit-fs-sidebar-title a {
-    font-size: 16px;
-    font-weight: 500;
-    color: #fff;
-    text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
 }
 
 .blogkit-fs-sidebar-meta {
-    font-size: 12px;
-    color: #ccc;
-    margin-top: 5px;
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 5px;
 }
 
 .blogkit-fs-badge {
-    display: inline-block;
-    font-size: 11px;
-    background: rgba(255, 255, 255, 0.08);
-    padding: 2px 6px;
-    border-radius: 4px;
-    margin-right: 6px;
+  display: inline-block;
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 6px;
 }
