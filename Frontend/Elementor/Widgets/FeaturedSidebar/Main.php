@@ -42,6 +42,27 @@ class Main extends Widget_Base
     }
 
     /**
+     * Get all posts.
+     *
+     * @since 1.0.0
+     * @access public
+     */
+    protected function get_all_posts()
+    {
+        $posts = get_posts([
+            'post_type' => 'post',
+            'numberposts' => -1,
+        ]);
+    
+        $options = [];
+        foreach ($posts as $post) {
+            $options[$post->ID] = $post->post_title;
+        }
+    
+        return $options;
+    }
+    
+    /**
      * Register controls.
      */
     protected function register_controls()
@@ -55,7 +76,33 @@ class Main extends Widget_Base
                 'tab' => Controls_Manager::TAB_CONTENT,
             ]
         );
-
+        
+        // Select Featured Posts
+        $this->add_control(
+            'featured_posts',
+            [
+                'label' => esc_html__('Select Featured Posts', 'blogkit'),
+                'type' => Controls_Manager::SELECT2,
+                'label_block' => true,
+                'multiple' => false,
+                'options' => $this->get_all_posts(),
+                'description' => esc_html__('Leave empty to show latest posts (with offset). and max 1 post', 'blogkit'),
+            ]
+        );
+        
+        // Select Sidebar Posts
+        $this->add_control(
+            'sidebar_posts',
+            [
+                'label' => esc_html__('Select Sidebar Posts', 'blogkit'),
+                'type' => Controls_Manager::SELECT2,
+                'label_block' => true,
+                'multiple' => true,
+                'options' => $this->get_all_posts(),
+                'description' => esc_html__('Leave empty to show latest posts (with offset). and max 4 posts', 'blogkit'),
+            ]
+        );
+        
         $this->end_controls_section();
 
 
