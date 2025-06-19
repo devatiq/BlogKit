@@ -6,19 +6,19 @@ if (!defined('ABSPATH')) {
 $settings = $this->get_settings_for_display();
 
 // === Featured Post Query ===
-$featured_posts = is_array($settings['featured_posts']) ? $settings['featured_posts'] : (array) $settings['featured_posts'];
-
 $featured_args = [
     'post_type' => 'post',
     'posts_per_page' => 1,
 ];
 
-if (!empty($featured_posts)) {
+if (!empty($settings['featured_posts'])) {
+    $featured_ids = is_array($settings['featured_posts']) ? $settings['featured_posts'] : (array) $settings['featured_posts'];
     $featured_args = [
         'post_type' => 'post',
-        'post__in' => array_map('absint', $featured_posts),
+        'post__in' => array_map('absint', $featured_ids),
         'orderby' => 'post__in',
         'posts_per_page' => 1,
+        'offset' => 0, // offset ignored when post__in is used
     ];
 }
 
@@ -26,25 +26,24 @@ $featured_query = new WP_Query($featured_args);
 
 
 // === Sidebar Post Query ===
-$sidebar_posts = is_array($settings['sidebar_posts']) ? $settings['sidebar_posts'] : (array) $settings['sidebar_posts'];
-
 $sidebar_args = [
     'post_type' => 'post',
     'posts_per_page' => 4,
     'offset' => 1,
 ];
 
-if (!empty($sidebar_posts)) {
+if (!empty($settings['sidebar_posts'])) {
+    $sidebar_ids = is_array($settings['sidebar_posts']) ? $settings['sidebar_posts'] : (array) $settings['sidebar_posts'];
     $sidebar_args = [
         'post_type' => 'post',
-        'post__in' => array_map('absint', $sidebar_posts),
+        'post__in' => array_map('absint', $sidebar_ids),
         'orderby' => 'post__in',
-        'posts_per_page' => 4,
+        'posts_per_page' => count($sidebar_ids),
+        'offset' => 0,
     ];
 }
 
 $sidebar_query = new WP_Query($sidebar_args);
-
 
 ?>
 
@@ -73,7 +72,8 @@ $sidebar_query = new WP_Query($sidebar_args);
                         </div>
                     </div>
                 <?php endwhile;
-                wp_reset_postdata(); endif; ?>
+                wp_reset_postdata();
+            endif; ?>
         </div>
 
         <!-- Sidebar Posts -->
@@ -100,7 +100,8 @@ $sidebar_query = new WP_Query($sidebar_args);
                         </div>
                     </div>
                 <?php endwhile;
-                wp_reset_postdata(); endif; ?>
+                wp_reset_postdata();
+            endif; ?>
         </div>
     </div>
 </div>
