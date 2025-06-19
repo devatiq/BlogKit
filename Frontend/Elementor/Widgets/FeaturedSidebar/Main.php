@@ -107,7 +107,7 @@ class Main extends Widget_Base
         $this->start_controls_section(
             'blogkit_fs_style_featured',
             [
-                'label' => esc_html__('Featured', 'blogkit'),
+                'label' => esc_html__('Featured Posts', 'blogkit'),
                 'tab' => Controls_Manager::TAB_STYLE,
             ]
         );
@@ -248,17 +248,18 @@ class Main extends Widget_Base
             ]
         );
 
-        $this->add_control(
-            'blogkit_fs_sidebar_bg',
+        // Sidebar Background
+        $this->add_group_control(
+            \Elementor\Group_Control_Background::get_type(),
             [
-                'label' => esc_html__('Item Background', 'blogkit'),
-                'type' => Controls_Manager::COLOR,
-                'selectors' => [
-                    '{{WRAPPER}} .blogkit-fs-sidebar-item' => 'background-color: {{VALUE}};',
-                ],
+                'name' => 'blogkit_fs_sidebar_background',
+                'label' => esc_html__('Background', 'blogkit'),
+                'types' => ['classic', 'gradient'],
+                'selector' => '{{WRAPPER}} .blogkit-fs-sidebar-item',
             ]
         );
 
+        // Sidebar Padding
         $this->add_responsive_control(
             'blogkit_fs_sidebar_padding',
             [
@@ -271,14 +272,175 @@ class Main extends Widget_Base
             ]
         );
 
+        // Sidebar Border
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name' => 'blogkit_fs_sidebar_border',
+                'label' => esc_html__('Border', 'blogkit'),
+                'selector' => '{{WRAPPER}} .blogkit-fs-sidebar-item',
+            ]
+        );
+
+        // Sidebar Border Radius
+        $this->add_responsive_control(
+            'blogkit_fs_sidebar_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'blogkit'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-sidebar-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        // Sidebar Title Typography
         $this->add_group_control(
             \Elementor\Group_Control_Typography::get_type(),
             [
                 'name' => 'blogkit_fs_sidebar_title_typo',
+                'label' => esc_html__('Title Typography', 'blogkit'),
                 'selector' => '{{WRAPPER}} .blogkit-fs-sidebar-title a',
             ]
         );
 
+        // Sidebar Title Color
+        $this->add_control(
+            'blogkit_fs_sidebar_title_color',
+            [
+                'label' => esc_html__('Title Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-sidebar-title a' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        // Sidebar Title Color Hover
+        $this->add_control(
+            'blogkit_fs_sidebar_title_color_hover',
+            [
+                'label' => esc_html__('Title Color Hover', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-sidebar-title a:hover' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        // Sidebar Category Typography
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'blogkit_fs_sidebar_category_typo',
+                'label' => esc_html__('Category Typography', 'blogkit'),
+                'selector' => '{{WRAPPER}} .blogkit-fs-badge',
+            ]
+        );
+
+        // Sidebar Category Color
+        $this->add_control(
+            'blogkit_fs_sidebar_category_color',
+            [
+                'label' => esc_html__('Category Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-badge' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Sidebar Category Background
+        $this->add_control(
+            'blogkit_fs_sidebar_category_bg',
+            [
+                'label' => esc_html__('Category Background', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-badge' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Sidebar Category Padding
+        $this->add_responsive_control(
+            'blogkit_fs_sidebar_category_padding',
+            [
+                'label' => esc_html__('Category Padding', 'blogkit'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-badge' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        // Sidebar Category Border
+        $this->add_group_control(
+            Group_Control_Border::get_type(),
+            [
+                'name' => 'blogkit_fs_sidebar_category_border',
+                'label' => esc_html__('Category Border', 'blogkit'),
+                'selector' => '{{WRAPPER}} .blogkit-fs-badge',
+            ]
+        );
+        // Sidebar Category Border Radius
+        $this->add_responsive_control(
+            'blogkit_fs_sidebar_category_border_radius',
+            [
+                'label' => esc_html__('Category Border Radius', 'blogkit'),
+                'type' => Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em'],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-badge' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        //thumbnail size
+        $this->add_responsive_control(
+            'blogkit_fs_sidebar_thumbnail_size',
+            [
+                'label' => esc_html__('Thumbnail Size', 'blogkit'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 60,
+                        'max' => 300,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-sidebar-thumb img' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
+
+        //Sidebar Meta Typography
+        $this->add_group_control(
+            \Elementor\Group_Control_Typography::get_type(),
+            [
+                'name' => 'blogkit_fs_sidebar_meta_typo',
+                'label' => esc_html__('Meta Typography', 'blogkit'),
+                'selector' => '{{WRAPPER}} .blogkit-fs-sidebar-date',
+            ]
+        );
+
+        //Item gap
+        $this->add_responsive_control(
+            'blogkit_fs_sidebar_item_gap',
+            [
+                'label' => esc_html__('Item Gap', 'blogkit'),
+                'type' => Controls_Manager::SLIDER,
+                'size_units' => ['px'],
+                'range' => [
+                    'px' => [
+                        'min' => 0,
+                        'max' => 100,
+                    ],
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-fs-sidebar' => 'gap: {{SIZE}}{{UNIT}};',
+                ],
+            ]
+        );
         $this->end_controls_section();
 
 
