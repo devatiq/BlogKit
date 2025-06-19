@@ -55,7 +55,6 @@ if ($query->have_posts()):
                 <!-- Category Button -->
                 <?php
                 if ('yes' === $settings['show_category']) {
-
                     $categories = get_the_category();
                     if ($categories && !is_wp_error($categories)) {
                         $first_category = $categories[0];

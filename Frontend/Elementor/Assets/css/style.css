@@ -348,7 +348,7 @@
   height: 24px;
   border-radius: 50%;
 }
-.blogkit-card-grid-wrapper .blogkit-card-grid-meta svg {
+.blogkit-card-grid-wrapper .blogkit-card-grid-meta svg , .blogkit-post-card-grid-wrapper .blogkit-post-card-content svg  {
   width: 15px;
   height: 15px;
 }
@@ -364,4 +364,60 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Post Card */
+.blogkit-post-card-grid-wrapper {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blogkit-post-card {
+  overflow: hidden;
+}
+
+
+.blogkit-post-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.blogkit-post-card-content {
+  padding: 1.5rem;
+}
+
+.blogkit-post-card-category {
+  display: inline-block;
+}
+
+.blogkit-post-card-meta {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.blogkit-post-card-meta span {
+  opacity: 0.8;
+}
+
+
+
+/* existing styles unchanged up to here */
+
+.blogkit-post-card-comments {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.blogkit-post-card-comments i {
+  color: #888;
+  font-size: 0.9rem;
 }

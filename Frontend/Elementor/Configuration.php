@@ -31,7 +31,7 @@ class Configuration
 {
     protected $assets;
     protected $custom_icons;
- 
+
 
     /**
      * Plugin version.
@@ -123,9 +123,9 @@ class Configuration
      * Admin notice: Elementor not installed.
      */
     public function admin_notice_missing_elementor()
-    {		
+    {
         $message = sprintf(
-			// Translators: 1. Plugin name, 2. Elementor plugin name, 3. Required Elementor version.
+            // Translators: 1. Plugin name, 2. Elementor plugin name, 3. Required Elementor version.
             esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'blogkit'),
             esc_html(BLOGKIT_NAME),
             esc_html__('Elementor', 'blogkit'),
@@ -138,9 +138,9 @@ class Configuration
      * Admin notice: Elementor version too low.
      */
     public function admin_notice_minimum_elementor_version()
-    {		
+    {
         $message = sprintf(
-			// Translators: 1. Plugin name, 2. Elementor plugin name, 3. Required Elementor version.
+            // Translators: 1. Plugin name, 2. Elementor plugin name, 3. Required Elementor version.
             esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'blogkit'),
             esc_html(BLOGKIT_NAME),
             esc_html__('Elementor', 'blogkit'),
@@ -153,9 +153,9 @@ class Configuration
      * Admin notice: PHP version too low.
      */
     public function admin_notice_minimum_php_version()
-    {		
+    {
         $message = sprintf(
-			// Translators: 1. Plugin name, 2. PHP, 3. Required PHP version.
+            // Translators: 1. Plugin name, 2. PHP, 3. Required PHP version.
             esc_html__('"%1$s" requires "%2$s" version %3$s or greater.', 'blogkit'),
             '<strong>' . BLOGKIT_NAME . '</strong>',
             '<strong>' . esc_html__('PHP', 'blogkit') . '</strong>',
@@ -168,7 +168,7 @@ class Configuration
      * Initialize classes.
      */
     public function classes_init()
-    {   
+    {
         $this->assets = new Assets();
         $this->custom_icons = new CustomIcons();
     }
@@ -190,13 +190,14 @@ class Configuration
     {
         $namespace_base = '\BlogKit\Frontend\Elementor\Widgets\\';
 
-        $widgets = [            
+        $widgets = [
             'blogkit_blog_grid_widget' => 'BlogGrid\Main',
-            'blogkit_classic_blog_grid' => 'BlogClassicGrid\Main',    
+            'blogkit_classic_blog_grid' => 'BlogClassicGrid\Main',
             'blogkit_card_grid' => 'CardGrid\Main',
             'blogkit_taxonomy_list' => 'TaxonomyList\Main',
             'blogkit_featured_sidebar' => 'FeaturedSidebar\Main',
-           
+            'blogkit_post_card' => 'PostCard\Main',
+
         ];
 
         foreach ($widgets as $option_name => $widget_class) {
