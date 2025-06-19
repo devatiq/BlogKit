@@ -46,7 +46,7 @@ if (!empty($settings['sidebar_posts'])) {
 $sidebar_query = new WP_Query($sidebar_args);
 
 ?>
-
+<!-- Featured Sidebar Widget -->
 <div class="blogkit-fs-widget">
     <div class="blogkit-fs-grid">
         <!-- Featured Post -->
@@ -54,9 +54,12 @@ $sidebar_query = new WP_Query($sidebar_args);
             <?php if ($featured_query->have_posts()):
                 while ($featured_query->have_posts()):
                     $featured_query->the_post(); ?>
+                    <!-- Featured Post Thumbnail -->
                     <a href="<?php the_permalink(); ?>" class="blogkit-fs-featured-thumb">
                         <?php the_post_thumbnail('large'); ?>
-                    </a>
+                    </a><!-- / Featured Post Thumbnail -->
+
+                    <!-- Featured Post Content -->
                     <div class="blogkit-fs-featured-content">
                         <?php
                         $cat = get_the_category();
@@ -64,30 +67,38 @@ $sidebar_query = new WP_Query($sidebar_args);
                             echo '<span class="blogkit-fs-category">' . esc_html($cat[0]->name) . '</span>';
                         }
                         ?>
+                        <!-- Featured Post Title -->
                         <h2 class="blogkit-fs-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h2>
+                        <!-- Meta -->
                         <div class="blogkit-fs-meta">
                             <span
                                 class="blogkit-fs-author"><?php echo esc_html__('BY', 'blogkit') . ' ' . get_the_author(); ?></span>
                             <span class="blogkit-fs-date"><?php echo get_the_date(); ?></span>
-                        </div>
-                    </div>
+                        </div><!-- / Meta -->
+                    </div><!-- / Featured Post Content -->
                 <?php endwhile;
                 wp_reset_postdata();
             endif; ?>
-        </div>
+        </div><!-- / Featured Sidebar Widget -->
 
         <!-- Sidebar Posts -->
         <div class="blogkit-fs-sidebar">
             <?php if ($sidebar_query->have_posts()):
                 while ($sidebar_query->have_posts()):
                     $sidebar_query->the_post(); ?>
+                    <!-- Sidebar Single Post -->
                     <div class="blogkit-fs-sidebar-item">
+                        <!-- Sidebar Post Thumbnail -->
                         <a href="<?php the_permalink(); ?>" class="blogkit-fs-sidebar-thumb">
                             <?php the_post_thumbnail('thumbnail'); ?>
-                        </a>
+                        </a><!-- / Sidebar Post Thumbnail -->
+                        <!-- Sidebar Post Content -->
                         <div class="blogkit-fs-sidebar-content">
+                            <!-- Post title -->
                             <h4 class="blogkit-fs-sidebar-title"><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                            </h4>
+                            </h4><!-- / Post title -->
+
+                            <!-- Post meta -->
                             <div class="blogkit-fs-sidebar-meta">
                                 <?php
                                 $cat = get_the_category();
@@ -96,12 +107,12 @@ $sidebar_query = new WP_Query($sidebar_args);
                                 }
                                 ?>
                                 <span class="blogkit-fs-sidebar-date"><?php echo get_the_date(); ?></span>
-                            </div>
-                        </div>
-                    </div>
+                            </div><!-- / Post meta -->
+                        </div><!-- / Sidebar Post Content -->
+                    </div><!-- / Sidebar Single Post -->
                 <?php endwhile;
                 wp_reset_postdata();
             endif; ?>
-        </div>
+        </div><!-- / Featured Sidebar Widget -->
     </div>
 </div>

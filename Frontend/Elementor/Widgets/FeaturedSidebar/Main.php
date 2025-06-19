@@ -7,7 +7,6 @@ if (!defined('ABSPATH'))
 use Elementor\Widget_Base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Border;
-use Elementor\Group_Control_Box_Shadow;
 
 class Main extends Widget_Base
 {
@@ -489,8 +488,6 @@ class Main extends Widget_Base
             ]
         );
         $this->end_controls_section();
-
-
 
     }
 
