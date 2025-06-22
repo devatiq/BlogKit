@@ -56,7 +56,12 @@ $sidebar_query = new WP_Query($sidebar_args);
                     $featured_query->the_post(); ?>
                     <!-- Featured Post Thumbnail -->
                     <a href="<?php the_permalink(); ?>" class="blogkit-fs-featured-thumb">
-                        <?php the_post_thumbnail('large'); ?>
+                        <?php if (has_post_thumbnail()): ?>
+                            <?php the_post_thumbnail('large'); ?>
+                        <?php else: ?>
+                            <img src="<?php echo esc_url(BLOGKIT_ELEMENTOR_ASSETS . '/img/placeholder.png'); ?>"
+                                alt="<?php the_title_attribute(); ?>">
+                        <?php endif; ?>
                     </a><!-- / Featured Post Thumbnail -->
 
                     <!-- Featured Post Content -->
@@ -90,7 +95,12 @@ $sidebar_query = new WP_Query($sidebar_args);
                     <div class="blogkit-fs-sidebar-item">
                         <!-- Sidebar Post Thumbnail -->
                         <a href="<?php the_permalink(); ?>" class="blogkit-fs-sidebar-thumb">
-                            <?php the_post_thumbnail('thumbnail'); ?>
+                            <?php if (has_post_thumbnail()): ?>
+                                <?php the_post_thumbnail('thumbnail'); ?>
+                            <?php else: ?>
+                                <img src="<?php echo esc_url(BLOGKIT_ELEMENTOR_ASSETS . '/img/placeholder.png'); ?>"
+                                    alt="<?php the_title_attribute(); ?>">
+                            <?php endif; ?>
                         </a><!-- / Sidebar Post Thumbnail -->
                         <!-- Sidebar Post Content -->
                         <div class="blogkit-fs-sidebar-content">
