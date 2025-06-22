@@ -48,7 +48,11 @@ if ($query->have_posts()):
                 <a class="blogkit-post-card-thumbnail" href="<?php the_permalink(); ?>">
                     <?php the_post_thumbnail('large'); ?>
                 </a>
+            <?php else: ?>
+                <img src="<?php echo esc_url(BLOGKIT_ELEMENTOR_ASSETS . '/img/placeholder.png'); ?>"
+                    alt="<?php the_title_attribute(); ?>">
             <?php endif; ?>
+
             <!-- Content   -->
             <div class="blogkit-post-card-content">
                 <!-- Category Button -->
@@ -62,14 +66,13 @@ if ($query->have_posts()):
                         echo '<a href="' . esc_url($category_link) . '" class="blogkit-post-card-category">' . esc_html($first_category->name) . '</a>';
                     }
                 }
-                ?>
 
-                <!-- Checking and rendering post title from switch  -->
-                <?php
-                if ('yes' === $settings['show_title']) {
-                    $title_tag = $settings['title_tag'];
-                    echo '<a href="' . get_the_permalink() . '"><' . $title_tag . ' class="blogkit-post-card-title">' . get_the_title() . '</' . $title_tag . '></a>';
-                }
+
+                // Rendering post title
+        
+                $title_tag = $settings['title_tag'];
+                echo '<a href="' . get_the_permalink() . '"><' . $title_tag . ' class="blogkit-post-card-title">' . get_the_title() . '</' . $title_tag . '></a>';
+
                 ?>
 
                 <div class="blogkit-post-card-meta">

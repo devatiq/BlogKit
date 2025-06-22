@@ -65,8 +65,10 @@ class Main extends Widget_Base
             'columns',
             [
                 'label' => esc_html__('Columns', 'blogkit'),
-                'type' => Controls_Manager::SELECT,
-                'default' => '3',
+                'type' => \Elementor\Controls_Manager::SELECT,
+                'default' => '3', // Desktop default
+                'tablet_default' => '2', // Tablet default
+                'mobile_default' => '1', // Mobile default
                 'options' => [
                     '1' => esc_html__('1 Column', 'blogkit'),
                     '2' => esc_html__('2 Columns', 'blogkit'),
@@ -143,18 +145,7 @@ class Main extends Widget_Base
         );
 
 
-        // Title switch control
-        $this->add_control(
-            'show_title',
-            [
-                'label' => esc_html__('Title', 'blogkit'),
-                'type' => \Elementor\Controls_Manager::SWITCHER,
-                'label_on' => esc_html__('Show', 'blogkit'),
-                'label_off' => esc_html__('Hide', 'blogkit'),
-                'return_value' => 'yes',
-                'default' => 'yes',
-            ]
-        );
+
 
         // Title tag control 
         $this->add_control(
@@ -174,9 +165,6 @@ class Main extends Widget_Base
                     'p' => 'p',
                 ],
                 'default' => 'h3',
-                'condition' => [
-                    'show_title' => 'yes',
-                ],
                 'separator' => 'after',
             ]
         );
@@ -302,10 +290,10 @@ class Main extends Widget_Base
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%', 'em', 'rem', 'custom'],
                 'default' => [
-                    'top' => 10,
-                    'right' => 10,
-                    'bottom' => 10,
-                    'left' => 10,
+                    'top' => 30,
+                    'right' => 20,
+                    'bottom' => 30,
+                    'left' => 20,
                     'unit' => 'px',
                     'isLinked' => true,
                 ],
@@ -470,6 +458,9 @@ class Main extends Widget_Base
             [
                 'label' => esc_html__('Category', 'blogkit'),
                 'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_category' => 'yes',
+                ],
             ]
         );
 
@@ -704,6 +695,7 @@ class Main extends Widget_Base
             [
                 'label' => esc_html__('Heading', 'blogkit'),
                 'tab' => Controls_Manager::TAB_STYLE,
+
             ]
         );
 
@@ -787,6 +779,9 @@ class Main extends Widget_Base
             [
                 'label' => esc_html__('Pagination', 'blogkit'),
                 'tab' => Controls_Manager::TAB_STYLE,
+                'condition' => [
+                    'show_pagination' => 'yes',
+                ],
             ]
         );
         // Spacing 
@@ -831,6 +826,59 @@ class Main extends Widget_Base
                 'selector' => '{{WRAPPER}} .blogkit-pagination ul li a, {{WRAPPER}} .blogkit-pagination .page-numbers.current',
             ]
         );
+        // Padding
+        $this->add_responsive_control(
+            'pagination_padding',
+            [
+                'label' => esc_html__('Padding', 'blogkit'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'default' => [
+                    'top' => 5,
+                    'right' => 5,
+                    'bottom' => 5,
+                    'left' => 5,
+                    'unit' => 'px',
+                    'isLinked' => false,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+        // Border Radius
+        $this->add_responsive_control(
+            'pagination_border_radius',
+            [
+                'label' => esc_html__('Border Radius', 'blogkit'),
+                'type' => \Elementor\Controls_Manager::DIMENSIONS,
+                'size_units' => ['px', '%', 'em', 'rem', 'custom'],
+                'default' => [
+                    'top' => 5,
+                    'right' => 5,
+                    'bottom' => 5,
+                    'left' => 5,
+                    'unit' => 'px',
+                    'isLinked' => false,
+                ],
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+                ],
+            ]
+        );
+
+
+        // Background Color
+        $this->add_control(
+            'pagination_bg_color',
+            [
+                'label' => esc_html__('Background Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
 
 
 
@@ -856,7 +904,6 @@ class Main extends Widget_Base
                 ],
             ]
         );
-
         // Background Color
         $this->add_control(
             'pagination_bg_color',
@@ -870,12 +917,68 @@ class Main extends Widget_Base
         );
 
 
+
+
         $this->end_controls_tab();
 
         $this->start_controls_tab(
             'pagination_style_hover_tab',
             [
                 'label' => esc_html__('Hover', 'blogkit'),
+            ]
+        );
+
+        // Text Color
+        $this->add_control(
+            'pagination_text_color',
+            [
+                'label' => esc_html__('Text Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul li a, {{WRAPPER}} .blogkit-pagination .page-numbers.current' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        // Background Color
+        $this->add_control(
+            'pagination_bg_color',
+            [
+                'label' => esc_html__('Background Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        $this->end_controls_tab();
+        $this->start_controls_tab(
+            'pagination_style_active_tab',
+            [
+                'label' => esc_html__('Active', 'blogkit'),
+            ]
+        );
+
+        // Text Color
+        $this->add_control(
+            'pagination_text_color',
+            [
+                'label' => esc_html__('Text Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul li a, {{WRAPPER}} .blogkit-pagination .page-numbers.current' => 'color: {{VALUE}};',
+                ],
+            ]
+        );
+        // Background Color
+        $this->add_control(
+            'pagination_bg_color',
+            [
+                'label' => esc_html__('Background Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-pagination ul' => 'background-color: {{VALUE}};',
+                ],
             ]
         );
 
