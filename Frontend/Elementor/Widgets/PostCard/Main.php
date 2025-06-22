@@ -425,34 +425,39 @@ class Main extends Widget_Base
             ]
         );
 
-        // Thumbnail position
+
+
         $this->add_responsive_control(
             'thumbnail_position',
             [
                 'label' => esc_html__('Position', 'blogkit'),
                 'type' => \Elementor\Controls_Manager::CHOOSE,
                 'options' => [
-                    'top' => [
+                    'column' => [
                         'title' => esc_html__('Top', 'blogkit'),
                         'icon' => 'eicon-v-align-top',
                     ],
-                    'right' => [
+                    'row-reverse' => [
                         'title' => esc_html__('Right', 'blogkit'),
                         'icon' => 'eicon-h-align-right',
                     ],
-                    'bottom' => [
+                    'column-reverse' => [
                         'title' => esc_html__('Bottom', 'blogkit'),
                         'icon' => 'eicon-v-align-bottom',
                     ],
-                    'left' => [
+                    'row' => [
                         'title' => esc_html__('Left', 'blogkit'),
                         'icon' => 'eicon-h-align-left',
                     ],
                 ],
-                'default' => 'top',
+                'default' => 'column',
                 'toggle' => true,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-post-card-grid-wrapper .blogkit-post-card' => 'flex-direction: {{VALUE}};',
+                ],
             ]
         );
+
 
         $this->end_controls_section();
 

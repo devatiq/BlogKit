@@ -32,25 +32,17 @@ if (!empty($settings['category'])) {
 }
 
 $query = new WP_Query($args);
+// end post query 
 
-
-
+// check if there are posts to display
 if ($query->have_posts()):
     echo '<div class="blogkit-post-card-grid-wrapper blogkit-grid-columns">';
 
     while ($query->have_posts()):
         $query->the_post();
-
-        // Determine thumbnail position class
-        if ($settings['thumbnail_position'] === 'left' || $settings['thumbnail_position'] === 'right' || $settings['thumbnail_position'] === 'top' || $settings['thumbnail_position'] === 'bottom') {
-            $thumbnail_position = ' blogkit-post-card-thumbnail-' . $settings['thumbnail_position'];
-        } else {
-            $thumbnail_position = '';
-        }
-
         ?>
         <!-- single blog -->
-        <div class="blogkit-post-card<?php echo esc_attr($thumbnail_position); ?>">
+        <div class="blogkit-post-card">
             <!-- Thumbnail -->
             <?php if (has_post_thumbnail()): ?>
                 <a class="blogkit-post-card-thumbnail" href="<?php the_permalink(); ?>">
@@ -71,8 +63,6 @@ if ($query->have_posts()):
                     }
                 }
                 ?>
-
-
 
                 <!-- Checking and rendering post title from switch  -->
                 <?php
@@ -95,12 +85,7 @@ if ($query->have_posts()):
 
                         echo '<span>' . human_time_diff(get_the_time('U'), current_time('timestamp')) . ' ago </span>';
                     }
-
-
                     ?>
-
-
-
 
                 </div>
                 <div class="blogkit-post-card-comments">
