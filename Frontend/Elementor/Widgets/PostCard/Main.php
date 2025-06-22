@@ -23,7 +23,7 @@ class Main extends Widget_Base
 
     public function get_icon()
     {
-        return 'eicon-gallery-grid blogkit-icon';
+        return 'eicon-posts-grid blogkit-icon';
     }
 
     public function get_categories()
@@ -425,6 +425,35 @@ class Main extends Widget_Base
             ]
         );
 
+        // Thumbnail position
+        $this->add_responsive_control(
+            'thumbnail_position',
+            [
+                'label' => esc_html__('Position', 'blogkit'),
+                'type' => \Elementor\Controls_Manager::CHOOSE,
+                'options' => [
+                    'top' => [
+                        'title' => esc_html__('Top', 'blogkit'),
+                        'icon' => 'eicon-v-align-top',
+                    ],
+                    'right' => [
+                        'title' => esc_html__('Right', 'blogkit'),
+                        'icon' => 'eicon-h-align-right',
+                    ],
+                    'bottom' => [
+                        'title' => esc_html__('Bottom', 'blogkit'),
+                        'icon' => 'eicon-v-align-bottom',
+                    ],
+                    'left' => [
+                        'title' => esc_html__('Left', 'blogkit'),
+                        'icon' => 'eicon-h-align-left',
+                    ],
+                ],
+                'default' => 'top',
+                'toggle' => true,
+            ]
+        );
+
         $this->end_controls_section();
 
 
@@ -455,6 +484,15 @@ class Main extends Widget_Base
                         ],
                     ],
                 ],
+            ]
+        );
+
+        //Border
+        $this->add_group_control(
+            \Elementor\Group_Control_Border::get_type(),
+            [
+                'name' => 'category_border',
+                'selector' => '{{WRAPPER}} .blogkit-post-card-grid-wrapper .blogkit-post-card-content .blogkit-post-card-category',
             ]
         );
 
@@ -569,6 +607,18 @@ class Main extends Widget_Base
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
                     '{{WRAPPER}} .blogkit-post-card-grid-wrapper .blogkit-post-card-content .blogkit-post-card-category:hover' => 'background-color: {{VALUE}};',
+                ],
+            ]
+        );
+
+        // Hover Border Color
+        $this->add_control(
+            'category_hover_border_color',
+            [
+                'label' => esc_html__('Border Color', 'blogkit'),
+                'type' => Controls_Manager::COLOR,
+                'selectors' => [
+                    '{{WRAPPER}} .blogkit-post-card-grid-wrapper .blogkit-post-card-content .blogkit-post-card-category:hover' => 'border-color: {{VALUE}};',
                 ],
             ]
         );

@@ -40,12 +40,20 @@ if ($query->have_posts()):
 
     while ($query->have_posts()):
         $query->the_post();
+
+        // Determine thumbnail position class
+        if ($settings['thumbnail_position'] === 'left' || $settings['thumbnail_position'] === 'right' || $settings['thumbnail_position'] === 'top' || $settings['thumbnail_position'] === 'bottom') {
+            $thumbnail_position = ' blogkit-post-card-thumbnail-' . $settings['thumbnail_position'];
+        } else {
+            $thumbnail_position = '';
+        }
+
         ?>
         <!-- single blog -->
-        <div class="blogkit-post-card">
+        <div class="blogkit-post-card<?php echo esc_attr($thumbnail_position); ?>">
             <!-- Thumbnail -->
             <?php if (has_post_thumbnail()): ?>
-                <a href="<?php the_permalink(); ?>">
+                <a class="blogkit-post-card-thumbnail" href="<?php the_permalink(); ?>">
                     <?php the_post_thumbnail('large'); ?>
                 </a>
             <?php endif; ?>
