@@ -282,11 +282,11 @@ class Main extends Widget_Base
             ]
         );
 
-        // Padding 
+        //Content Padding 
         $this->add_responsive_control(
             'item_body_padding',
             [
-                'label' => esc_html__('Body Padding', 'blogkit'),
+                'label' => esc_html__('Content Padding', 'blogkit'),
                 'type' => \Elementor\Controls_Manager::DIMENSIONS,
                 'size_units' => ['px', '%', 'em', 'rem', 'custom'],
                 'default' => [
@@ -302,7 +302,7 @@ class Main extends Widget_Base
                 ],
             ]
         );
-        // Body Padding 
+        //Padding 
         $this->add_responsive_control(
             'grid_item_padding',
             [
