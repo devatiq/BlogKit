@@ -143,6 +143,7 @@ class Main extends Widget_Base
         );
 
 
+
         $this->end_controls_section();
 
         /**
@@ -381,7 +382,7 @@ class Main extends Widget_Base
         $this->start_controls_tab(
             'category_style_hover_tab',
             [
-                'label' => esc_html__('Normal', 'blogkit'),
+                'label' => esc_html__('Hover', 'blogkit'),
             ]
         );
 
@@ -392,7 +393,7 @@ class Main extends Widget_Base
                 'label' => esc_html__('Text Color', 'blogkit'),
                 'type' => Controls_Manager::COLOR,
                 'selectors' => [
-                    '{{WRAPPER}} .blogkit-fg-custom-post .blogkit-fg-post-card .blogkit-fg-post-card__cat' => 'color: {{VALUE}};',
+                    '{{WRAPPER}} .blogkit-fg-custom-post .blogkit-fg-post-card .blogkit-fg-post-card__cat:hover' => 'color: {{VALUE}};',
                 ],
             ]
         );
