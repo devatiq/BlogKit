@@ -23,8 +23,6 @@ if (!$query->have_posts()) {
     return;
 }
 
-
-
 $posts = [];
 while ($query->have_posts()) {
     $query->the_post();
