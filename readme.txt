@@ -4,7 +4,7 @@ Tags: elementor, grid posts, custom post layout, blog design
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,11 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 
 
 == Changelog ==
+= 1.3.2 =
+* Card Grid - Added fallback/placeholder thumbnail feature for posts without a featured image.
+* Card Grid - Added Enable/Disable toggle for fallback thumbnail in the Layout settings.
+* Card Grid - Fixed fallback thumbnail height to match real thumbnail size.
+
 = 1.3.1 =
 * CSS issue fix
 
