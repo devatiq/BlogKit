@@ -38,14 +38,19 @@ $query = new WP_Query($args);
 if ( $query->have_posts() ) :
 			$posts = $query->posts;
 			$featured_post = array_shift( $posts ); // first post
+			$fallback_enabled = ( 'yes' === ( $settings['enable_fallback_thumbnail'] ?? 'yes' ) );
+			$placeholder_url  = BLOGKIT_URL . 'Frontend/Elementor/Assets/img/placeholder.png';
 			?>
 
 			<section class="blogkit-card-grid grid-style2">
 				<!-- Featured Post -->
 				<?php if ( $featured_post ) :
 					$thumb = get_the_post_thumbnail_url( $featured_post->ID, 'large' );
+					if ( ! $thumb && $fallback_enabled ) {
+						$thumb = $placeholder_url;
+					}
 					?>
-					<div class="blogkit-featured-post">
+					<div class="blogkit-featured-post<?php echo ( ! get_the_post_thumbnail_url( $featured_post->ID, 'large' ) && $fallback_enabled ) ? ' blogkit-fallback-thumb' : ''; ?>">
 						<a href="<?php echo get_permalink( $featured_post->ID ); ?>">
 							<img class="blogkit-featured-thumbnail" src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( get_the_title( $featured_post->ID ) ); ?>">
 						</a>
@@ -79,8 +84,11 @@ if ( $query->have_posts() ) :
 					foreach ( $posts as $index => $post ) :
 						setup_postdata( $post );
 						$thumb = get_the_post_thumbnail_url( $post->ID, 'medium_large' );
+						if ( ! $thumb && $fallback_enabled ) {
+							$thumb = $placeholder_url;
+						}
 						?>
-						<div class="blogkit-card-grid-item">
+						<div class="blogkit-card-grid-item<?php echo ( ! get_the_post_thumbnail_url( $post->ID, 'medium_large' ) && $fallback_enabled ) ? ' blogkit-fallback-thumb' : ''; ?>">
 							<a href="<?php echo get_permalink( $post->ID ); ?>">
 								<img src="<?php echo esc_url( $thumb ); ?>" alt="<?php echo esc_attr( get_the_title( $post->ID ) ); ?>">
 								

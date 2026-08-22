@@ -38,16 +38,25 @@ $query = new WP_Query($args);
 if ($query->have_posts()):
     $posts = $query->posts;
     $featured_post = array_shift($posts); // first post
+    $fallback_enabled = ( 'yes' === ( $settings['enable_fallback_thumbnail'] ?? 'yes' ) );
+    $placeholder_url  = BLOGKIT_URL . 'Frontend/Elementor/Assets/img/placeholder.png';
     ?>
 
     <section class="blogkit-card-grid grid-style3">
         <!-- Featured Post -->
         <?php if ($featured_post):
+            $featured_has_thumb = has_post_thumbnail( $featured_post->ID );
             ?>
             <div class="blogkit-featured-post">
-                <div class="blogkit-featured-thumb">
+                <div class="blogkit-featured-thumb<?php echo ( ! $featured_has_thumb && $fallback_enabled ) ? ' blogkit-fallback-thumb' : ''; ?>">
                     <a href="<?php echo get_permalink($featured_post); ?>">
-                        <?php echo get_the_post_thumbnail($featured_post, 'large'); ?>
+                        <?php
+                        if ( $featured_has_thumb ) {
+                            echo get_the_post_thumbnail($featured_post, 'large');
+                        } elseif ( $fallback_enabled ) {
+                            echo '<img src="' . esc_url( $placeholder_url ) . '" alt="' . esc_attr( $featured_post->post_title ) . '">';
+                        }
+                        ?>
                     </a>
                 </div>
 
@@ -92,11 +101,14 @@ if ($query->have_posts()):
             foreach ($posts as $index => $post):
                 setup_postdata($post);
                 $thumb = get_the_post_thumbnail_url($post->ID, 'medium_large');
+                if ( ! $thumb && $fallback_enabled ) {
+                    $thumb = $placeholder_url;
+                }
                 ?>
 
                 <div class="blogkit-card-grid-item">
 
-                    <div class="blogkit-card-grid-thumb">
+                    <div class="blogkit-card-grid-thumb<?php echo ( ! get_the_post_thumbnail_url( $post->ID, 'medium_large' ) && $fallback_enabled ) ? ' blogkit-fallback-thumb' : ''; ?>">
                         <a href="<?php the_permalink($post->ID); ?>">
                             <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title($post->ID)); ?>">
                         </a>

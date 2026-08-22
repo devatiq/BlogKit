@@ -337,6 +337,21 @@ class Main extends Widget_Base
             ]
         );
 
+        // Fallback Thumbnail switcher
+        $this->add_control(
+            'enable_fallback_thumbnail',
+            [
+                'label'        => esc_html__( 'Fallback Thumbnail', 'blogkit' ),
+                'type'         => \Elementor\Controls_Manager::SWITCHER,
+                'label_on'     => esc_html__( 'Enable', 'blogkit' ),
+                'label_off'    => esc_html__( 'Disable', 'blogkit' ),
+                'return_value' => 'yes',
+                'default'      => 'yes',
+                'separator'    => 'before',
+                'description'  => esc_html__( 'Show a placeholder image for posts that have no featured thumbnail set.', 'blogkit' ),
+            ]
+        );
+
         // Pagination
         $this->add_control(
             'show_pagination',

@@ -45,10 +45,19 @@ if ($query->have_posts()):
         <div class="blogkit-card-grid-item">
             <div class="blogkit-card-grid-header">
                 <!-- Thumbnail -->
-                <?php if (has_post_thumbnail()): ?>
+                <?php
+                $fallback_enabled = ( 'yes' === ( $settings['enable_fallback_thumbnail'] ?? 'yes' ) );
+                if ( has_post_thumbnail() ) :
+                ?>
                     <div class="blogkit-card-grid-sbthumb">
                         <a href="<?php the_permalink(); ?>">
                             <?php the_post_thumbnail('large'); ?>
+                        </a>
+                    </div>
+                <?php elseif ( $fallback_enabled ) : ?>
+                    <div class="blogkit-card-grid-sbthumb blogkit-fallback-thumb">
+                        <a href="<?php the_permalink(); ?>">
+                            <img src="<?php echo esc_url( BLOGKIT_URL . 'Frontend/Elementor/Assets/img/placeholder.png' ); ?>" alt="<?php echo esc_attr( get_the_title() ); ?>">
                         </a>
                     </div>
                 <?php endif; ?>
