@@ -23,11 +23,6 @@ jobs:
         with:
           ref: ${{ inputs.tag || github.ref }}
 
-      - name: Install PHP dependencies
-        uses: ramsey/composer-install@57532f8be5bda426838819c5ee9afb8af389d51a
-        with:
-          composer-options: '--prefer-dist --no-dev'
-
       - name: Remove source files from assets
         run: rm -rf .wordpress-org/hd
 

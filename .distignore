@@ -46,3 +46,5 @@ postcss.config.js
 FUTURE-FEATURES.md
 *.md
 tests
+vendor
+composer.json
