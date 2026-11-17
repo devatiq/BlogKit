@@ -102,6 +102,56 @@ trait QueryControls
                 'condition' => ['blogkit_date_range' => 'custom'],
             ]
         );
+
+        $this->add_control(
+            'blogkit_schema',
+            [
+                'label' => esc_html__('Schema Markup (ItemList)', 'blogkit'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('On', 'blogkit'),
+                'label_off' => esc_html__('Off', 'blogkit'),
+                'return_value' => 'yes',
+                'default' => '',
+                'description' => esc_html__('Adds JSON-LD structured data for the listed posts. Turn it off if your SEO plugin already outputs it.', 'blogkit'),
+            ]
+        );
+    }
+
+    /**
+     * Print schema.org ItemList JSON-LD for the posts of a query (opt-in).
+     *
+     * @param \WP_Query $query    The widget query.
+     * @param array     $settings Widget settings.
+     */
+    protected function blogkit_output_schema($query, array $settings)
+    {
+        if (empty($settings['blogkit_schema']) || 'yes' !== $settings['blogkit_schema'] || empty($query->posts)) {
+            return;
+        }
+
+        $per_page = max(1, (int) $query->get('posts_per_page'));
+        $offset = max(0, ((int) $query->get('paged') ?: 1) - 1) * $per_page;
+        $items = [];
+
+        foreach (array_values($query->posts) as $index => $post) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => $offset + $index + 1,
+                'url' => get_permalink($post),
+                'name' => wp_strip_all_tags(get_the_title($post)),
+            ];
+        }
+
+        $data = [
+            '@context' => 'https://schema.org',
+            '@type' => 'ItemList',
+            'itemListElement' => $items,
+        ];
+
+        wp_print_inline_script_tag(
+            wp_json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP),
+            ['type' => 'application/ld+json']
+        );
     }
 
     /**

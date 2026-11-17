@@ -12,7 +12,7 @@ Status: ideas only, not committed to a release. Review one by one.
 | 4 | Reading time, view count, post-format badge | | TBD |
 | 5 | Post carousel/slider widget | Swiper already bundled | TBD |
 | 6 | Skeleton loading + lazy-load images | | TBD |
-| 7 | Schema.org markup, SEO-friendly heading hierarchy | | TBD |
+| 7 | Schema.org markup (opt-in ItemList JSON-LD, 6 widgets); heading tag is already selectable | Done (unreleased) |
 | 8 | Global settings page (widget toggles, default colors, fallback image) | Widget toggle option already exists | TBD |
 | 9 | Gutenberg block version | Works without Elementor | TBD |
 

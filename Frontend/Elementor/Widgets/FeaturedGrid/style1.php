@@ -22,6 +22,8 @@ $args = $this->blogkit_apply_query_args($args, $settings);
 
 $query = new WP_Query($args);
 
+$this->blogkit_output_schema($query, $settings);
+
 if (!$query->have_posts()) {
     echo '<p>No posts found.</p>';
     return;

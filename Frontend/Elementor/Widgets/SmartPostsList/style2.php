@@ -35,6 +35,8 @@ if (!empty($settings['category'])) {
 $args = $this->blogkit_apply_query_args($args, $settings);
 
 $query = new WP_Query($args);
+
+$this->blogkit_output_schema($query, $settings);
 // end post query 
 
 // check if there are posts to display

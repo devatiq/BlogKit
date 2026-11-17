@@ -22,6 +22,8 @@ $query_args = $this->blogkit_apply_query_args($query_args, $settings);
 
 $query = new \WP_Query($query_args);
 
+$this->blogkit_output_schema($query, $settings);
+
 if ($query->have_posts()) {
     echo '<div class="blogkit-classic-grid columns-' . esc_attr($settings['columns'] ?? '3') . '">';
     while ($query->have_posts()) {
