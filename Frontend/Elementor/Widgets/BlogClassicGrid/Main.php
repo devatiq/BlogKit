@@ -12,6 +12,8 @@ use Elementor\Group_Control_Typography;
 
 class Main extends Widget_Base
 {
+    use \BlogKit\Frontend\Elementor\Traits\QueryControls;
+
     public function get_name()
     {
         return 'blogkit-blog-classic-grid';
@@ -106,6 +108,8 @@ class Main extends Widget_Base
                 'label_block' => true,
             ]
         );
+
+        $this->blogkit_register_query_controls();
 
         $this->end_controls_section();
 

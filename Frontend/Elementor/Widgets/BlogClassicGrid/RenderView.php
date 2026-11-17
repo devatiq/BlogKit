@@ -18,6 +18,7 @@ $query_args = [
 if (!empty($settings['category'])) {
     $query_args['category_name'] = implode(',', $settings['category']);
 }
+$query_args = $this->blogkit_apply_query_args($query_args, $settings);
 
 $query = new \WP_Query($query_args);
 

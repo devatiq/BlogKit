@@ -8,7 +8,7 @@ Status: ideas only, not committed to a release. Review one by one.
 |---|---------|-------|----------|
 | 1 | AJAX "Load more" / infinite scroll | Blog Grid, Card Grid | TBD |
 | 2 | Live search + category/tag filter tabs | | TBD |
-| 3 | Extra query options: tags, authors, date range, exclude posts, custom post types | | TBD |
+| 3 | Extra query options: tags, authors, date range, exclude posts, custom post types | Done (unreleased). Shared trait `Frontend/Elementor/Traits/QueryControls.php`, 6 widgets | Done |
 | 4 | Reading time, view count, post-format badge | | TBD |
 | 5 | Post carousel/slider widget | Swiper already bundled | TBD |
 | 6 | Skeleton loading + lazy-load images | | TBD |
