@@ -58,6 +58,7 @@ class Assets
     {
         // General scripts
         wp_register_script('swiper-bundle-js', BLOGKIT_ELEMENTOR_ASSETS . "/js/swiper-bundle.min.js", ['jquery'], BLOGKIT_VERSION, true);
+        wp_register_script('blogkit-load-more', BLOGKIT_ELEMENTOR_ASSETS . "/js/load-more.js", [], BLOGKIT_VERSION, true);
         wp_register_script('blogkit-main', BLOGKIT_ELEMENTOR_ASSETS . "/js/main.js", ['jquery'], BLOGKIT_VERSION, true);
         wp_register_script('blogkit-taxonomy-slider', BLOGKIT_ELEMENTOR_ASSETS . "/js/taxonomy-slider.js", ['jquery' , 'swiper-bundle-js'], BLOGKIT_VERSION, true);
     }

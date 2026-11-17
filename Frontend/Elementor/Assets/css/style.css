@@ -1179,3 +1179,30 @@
     margin: 0px 10px 40px;
   }
 }
+/* Load more / infinite scroll */
+.blogkit-load-more-wrap {
+    text-align: center;
+    margin: 24px 0;
+}
+.blogkit-load-more {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 4px;
+    background: #1d9fb0;
+    color: #fff;
+    text-decoration: none;
+    line-height: 1.2;
+    cursor: pointer;
+}
+.blogkit-load-more:hover,
+.blogkit-load-more:focus {
+    opacity: .9;
+    color: #fff;
+}
+.blogkit-load-more-wrap.is-loading .blogkit-load-more {
+    opacity: .6;
+    pointer-events: none;
+}
+.blogkit-load-more-wrap[data-done] {
+    display: none;
+}

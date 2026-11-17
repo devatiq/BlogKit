@@ -116,11 +116,7 @@ if ($query->have_posts()):
             'type' => 'list',
         ]);
 
-        if ($pagination_links) {
-            echo '<div class="blogkit-pagination">' . wp_kses_post($pagination_links) . '</div>';
-        } else {
-            echo '<p>' . esc_html__('No posts found.', 'blogkit') . '</p>';
-        }
+        $this->blogkit_render_pagination($pagination_links, $settings, $paged, $query->max_num_pages);
 
         wp_reset_postdata();
 

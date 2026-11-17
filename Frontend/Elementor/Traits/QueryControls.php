@@ -166,6 +166,73 @@ trait QueryControls
     }
 
     /**
+     * Register the pagination type controls (numbers, load more, infinite scroll).
+     *
+     * @param array $condition Optional Elementor condition for the controls.
+     */
+    protected function blogkit_register_pagination_controls(array $condition = [])
+    {
+        $this->add_control(
+            'blogkit_pagination_type',
+            [
+                'label' => esc_html__('Pagination Type', 'blogkit'),
+                'type' => Controls_Manager::SELECT,
+                'default' => 'numbers',
+                'options' => [
+                    'numbers' => esc_html__('Page numbers', 'blogkit'),
+                    'load_more' => esc_html__('Load more button', 'blogkit'),
+                    'infinite' => esc_html__('Infinite scroll', 'blogkit'),
+                ],
+                'condition' => $condition,
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_load_more_text',
+            [
+                'label' => esc_html__('Button Text', 'blogkit'),
+                'type' => Controls_Manager::TEXT,
+                'default' => esc_html__('Load More', 'blogkit'),
+                'condition' => $condition + ['blogkit_pagination_type' => ['load_more', 'infinite']],
+            ]
+        );
+    }
+
+    /**
+     * Output the pagination for a widget.
+     *
+     * @param string $links     Result of paginate_links() (list markup) or empty.
+     * @param array  $settings  Widget settings.
+     * @param int    $paged     Current page.
+     * @param int    $max_pages Total pages.
+     */
+    protected function blogkit_render_pagination($links, array $settings, $paged, $max_pages)
+    {
+        $type = isset($settings['blogkit_pagination_type']) ? $settings['blogkit_pagination_type'] : 'numbers';
+
+        if (in_array($type, ['load_more', 'infinite'], true)) {
+            if ((int) $paged < (int) $max_pages) {
+                $text = !empty($settings['blogkit_load_more_text']) ? $settings['blogkit_load_more_text'] : __('Load More', 'blogkit');
+                $url = add_query_arg('paged', (int) $paged + 1, get_pagenum_link(1));
+                printf(
+                    '<div class="blogkit-load-more-wrap" data-type="%1$s"><a class="blogkit-load-more" href="%2$s" rel="next">%3$s</a></div>',
+                    esc_attr($type),
+                    esc_url($url),
+                    esc_html($text)
+                );
+            } else {
+                // Last page: keep an empty marker so the script can find the items container.
+                printf('<div class="blogkit-load-more-wrap" data-type="%s" data-done="1"></div>', esc_attr($type));
+            }
+            return;
+        }
+
+        if ($links) {
+            echo '<div class="blogkit-pagination">' . wp_kses_post($links) . '</div>';
+        }
+    }
+
+    /**
      * Public post types (attachments excluded).
      */
     private function blogkit_get_post_type_options()

@@ -15,6 +15,11 @@ class Main extends Widget_Base
 {
     use \BlogKit\Frontend\Elementor\Traits\QueryControls;
 
+    public function get_script_depends()
+    {
+        return ['blogkit-load-more'];
+    }
+
     public function get_name()
     {
         return 'blogkit-card-grid';
@@ -200,6 +205,7 @@ class Main extends Widget_Base
         );
 
         $this->blogkit_register_query_controls();
+        $this->blogkit_register_pagination_controls(['layout_style' => 'style_1']);
 
         $this->end_controls_section();
 

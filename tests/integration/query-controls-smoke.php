@@ -14,6 +14,12 @@ foreach (['BlogGrid', 'BlogClassicGrid', 'PostCard', 'CardGrid', 'FeaturedGrid',
     $c = (new $class())->get_controls();
     $check(isset($c['blogkit_post_types'], $c['blogkit_tags'], $c['blogkit_authors'], $c['blogkit_exclude_posts'], $c['blogkit_date_range'], $c['blogkit_date_after'], $c['blogkit_date_before']), "$name has query controls");
 }
+foreach (['BlogGrid', 'PostCard', 'CardGrid', 'SmartPostsList'] as $name) {
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
+    $c = (new $class())->get_controls();
+    $check(isset($c['blogkit_pagination_type'], $c['blogkit_load_more_text']), "$name has pagination controls");
+    $check(in_array('blogkit-load-more', (new $class())->get_script_depends(), true), "$name depends on load-more script");
+}
 $w = new \BlogKit\Frontend\Elementor\Widgets\BlogGrid\Main();
 $m = new ReflectionMethod($w, 'blogkit_apply_query_args');
 $m->setAccessible(true);

@@ -13,6 +13,11 @@ class Main extends Widget_Base
 {
     use \BlogKit\Frontend\Elementor\Traits\QueryControls;
 
+    public function get_script_depends()
+    {
+        return ['blogkit-load-more'];
+    }
+
     public function get_name()
     {
         return 'smart-posts-list';
@@ -142,6 +147,7 @@ class Main extends Widget_Base
         );
 
         $this->blogkit_register_query_controls();
+        $this->blogkit_register_pagination_controls();
 
         $this->end_controls_section();
 

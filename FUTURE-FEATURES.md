@@ -6,7 +6,7 @@ Status: ideas only, not committed to a release. Review one by one.
 
 | # | Feature | Notes | Decision |
 |---|---------|-------|----------|
-| 1 | AJAX "Load more" / infinite scroll | Blog Grid, Card Grid | TBD |
+| 1 | AJAX "Load more" / infinite scroll | Blog Grid, Post Card, Card Grid (style 1), Smart Posts List. Fetches the next ?paged=N page, no extra endpoint | Done (unreleased) |
 | 2 | Live search + category/tag filter tabs | | TBD |
 | 3 | Extra query options: tags, authors, date range, exclude posts, custom post types | Done (unreleased). Shared trait `Frontend/Elementor/Traits/QueryControls.php`, 6 widgets | Done (1.3.4) |
 | 4 | Reading time, view count, post-format badge | | TBD |
