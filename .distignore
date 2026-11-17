@@ -43,3 +43,5 @@ node_modules
 build
 postcss.config.js
 .wordpress-org
+FUTURE-FEATURES.md
+*.md
