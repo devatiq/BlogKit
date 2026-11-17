@@ -1,12 +1,12 @@
 === BlogKit - Advanced Blog Elements for Elementor ===
 Contributors: nexibyllc,atiqbd4ever
-Tags: elementor, grid posts, custom post layout, blog design
+Tags: blog grid, post grid, blog layout, posts widget, page builder
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.4
+Stable tag: 1.3.5
 License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 BlogKit enhances your WordPress blog with advanced Elementor widgets and features for creating beautiful blog layouts.
 
@@ -53,7 +53,33 @@ BlogKit works with any WordPress theme that supports Elementor.
 Yes, all BlogKit widgets come with extensive styling options in the Elementor editor.
 
 
+== Screenshots ==
+
+1. Blog Grid widget showing posts on a page.
+2. The new Query options (post types, tags, authors, exclude posts, date range) in the Elementor editor.
+
+== Source code ==
+
+BlogKit has no build step. All PHP, CSS and JavaScript in this plugin is readable source. The only minified files are the bundled Swiper slider library (version 11.2.10, MIT licence): `Frontend/Elementor/Assets/js/swiper-bundle.min.js` and `Frontend/Elementor/Assets/css/swiper-bundle.min.css`. Their source is at https://github.com/nolimits4web/swiper and https://swiperjs.com . The plugin source is at https://github.com/devatiq/BlogKit .
+
+== Privacy ==
+
+BlogKit does not collect or store personal data, does not set cookies and does not send anything to its author or any third party. The only data it saves is the optional category image URL, stored as category (term) meta in your own database.
+
+== External services ==
+
+BlogKit does not connect to any external service. All scripts, styles and icons are bundled with the plugin.
+
+== Trademarks ==
+
+"BlogKit" is an original name: a "kit" of blog widgets. "Elementor" is named only to say that this plugin is an add-on that works with the Elementor page builder. BlogKit is not made by or affiliated with Elementor Ltd.
+
 == Changelog ==
+= 1.3.5 =
+* Fix - Plugin now uses its own lightweight autoloader (no Composer vendor folder shipped).
+* Fix - Readme: added Screenshots, Source code, Privacy, External services and Trademarks sections, and removed a product name from the tags.
+* Fix - Added GPL license file and the missing direct-access guard in the SVG helper.
+
 = 1.3.4 =
 * New - Post widgets (Blog Grid, Blog Classic Grid, Post Card, Card Grid, Featured Grid, Smart Posts List) now have extra query options: Post Types, Tags, Authors, Exclude Posts and Date Range.
 * Fix - Added missing direct-access guards to the Featured Grid template and SVG helper.
@@ -101,6 +127,9 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 * Added styling options
 
 == Upgrade Notice ==
+
+= 1.3.5 =
+Packaging and readme fixes. No functional changes.
 
 = 1.3.4 =
 Adds extra query options to the post widgets.

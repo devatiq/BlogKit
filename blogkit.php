@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BlogKit - Advanced Blog Elements for Elementor
  * Description: A powerful toolkit for enhancing your WordPress blog with custom features and performance improvements.
- * Version: 1.3.4
+ * Version: 1.3.5
  * Author: Nexiby LLC
  * Author URI: https://nexiby.com
  * License: GPLv2 or later
@@ -58,7 +58,7 @@ final class BlogKit
      */
     private function define_constants()
     {
-        define('BLOGKIT_VERSION', '1.3.4');
+        define('BLOGKIT_VERSION', '1.3.5');
         define('BLOGKIT_PATH', plugin_dir_path(__FILE__));
         define('BLOGKIT_URL', plugin_dir_url(__FILE__));
         define('BLOGKIT_BASENAME', plugin_basename(__FILE__));
@@ -71,9 +71,25 @@ final class BlogKit
      */
     private function include_files()
     {
-        if (file_exists(BLOGKIT_PATH . 'vendor/autoload.php')) {
-            require_once BLOGKIT_PATH . 'vendor/autoload.php';
-        }
+        spl_autoload_register(static function ($class) {
+            // Longest namespace prefix first.
+            $map = [
+                'BlogKit\\Frontend\\Elementor\\' => BLOGKIT_PATH . 'Frontend/Elementor/',
+                'BlogKit\\Frontend\\' => BLOGKIT_PATH . 'Frontend/',
+                'BlogKit\\Admin\\' => BLOGKIT_PATH . 'Admin/',
+                'BlogKit\\Elementor\\' => BLOGKIT_PATH . 'Frontend/Elementor/',
+                'BlogKit\\' => BLOGKIT_PATH . 'Inc/',
+            ];
+            foreach ($map as $prefix => $dir) {
+                if (0 === strpos($class, $prefix)) {
+                    $file = $dir . str_replace('\\', '/', substr($class, strlen($prefix))) . '.php';
+                    if (is_readable($file)) {
+                        require_once $file;
+                    }
+                    return;
+                }
+            }
+        });
     }
 
     /**
