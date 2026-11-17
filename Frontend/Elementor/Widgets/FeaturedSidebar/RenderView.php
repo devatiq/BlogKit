@@ -9,6 +9,7 @@ $settings = $this->get_settings_for_display();
 $featured_args = [
     'post_type' => 'post',
     'posts_per_page' => 1,
+    'no_found_rows' => true,
 ];
 
 if (!empty($settings['featured_posts'])) {
@@ -18,6 +19,7 @@ if (!empty($settings['featured_posts'])) {
         'post__in' => array_map('absint', $featured_ids),
         'orderby' => 'post__in',
         'posts_per_page' => 1,
+    'no_found_rows' => true,
         'offset' => 0, // offset ignored when post__in is used
     ];
 }

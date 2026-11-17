@@ -4,7 +4,7 @@ Tags: elementor, grid posts, custom post layout, blog design
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.2
+Stable tag: 1.3.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,15 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 
 
 == Changelog ==
+= 1.3.3 =
+* Security - Title HTML tag setting is now restricted to an allowed list (h1-h6, div, span, p).
+* Security - Post links, category links and read-more text are now escaped on output.
+* Security - Category image field now checks user capability and sanitizes the saved URL.
+* Fix - Plugin version constant now matches the plugin header (fixes stale asset cache).
+* Fix - Featured Grid text domain corrected so strings are translatable.
+* Performance - Skip unneeded total-row counting in Featured Sidebar, Featured Grid and Blog Classic Grid queries.
+* Tweak - Use wp_rand() instead of mt_rand(); category image field labels are translatable.
+
 = 1.3.2 =
 * Card Grid - Added fallback/placeholder thumbnail feature for posts without a featured image.
 * Card Grid - Added Enable/Disable toggle for fallback thumbnail in the Layout settings.
@@ -88,6 +97,9 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 * Added styling options
 
 == Upgrade Notice ==
+
+= 1.3.3 =
+Security hardening and bug fixes. Update recommended.
 
 = 1.0.0 =
 Initial release of BlogKit plugin.

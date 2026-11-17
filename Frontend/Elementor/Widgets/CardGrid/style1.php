@@ -90,8 +90,8 @@ if ($query->have_posts()):
                 <!-- Checking and rendering post title from switch  -->
                 <?php
                 if ('yes' === $settings['show_title']) {
-                    $title_tag = $settings['title_tag'];
-                    echo '<a href="' . get_the_permalink() . '"><' . $title_tag . ' class="blogkit-card-grid-title">' . get_the_title() . '</' . $title_tag . '></a>';
+                    $title_tag = in_array($settings['title_tag'] ?? 'h3', ['h1','h2','h3','h4','h5','h6','div','span','p'], true) ? $settings['title_tag'] : 'h3';
+                    echo '<a href="' . esc_url(get_the_permalink()) . '"><' . $title_tag . ' class="blogkit-card-grid-title">' . get_the_title() . '</' . $title_tag . '></a>';
                 }
                 ?>
 
@@ -102,7 +102,7 @@ if ($query->have_posts()):
                 }
                 // Checking and rendering Read More button from switch 
                 if ('yes' === $settings['show_read_more'] && !empty($settings['read_more_text'])) {
-                    echo '<a href="' . get_the_permalink() . '" class="blogkit-card-grid-more-link">' . $settings['read_more_text'] . '</a>';
+                    echo '<a href="' . esc_url(get_the_permalink()) . '" class="blogkit-card-grid-more-link">' . esc_html($settings['read_more_text']) . '</a>';
                 }
                 ?>
 

@@ -273,7 +273,7 @@ class Main extends Widget_Base
 			[
 				'type' => \Elementor\Controls_Manager::ALERT,
 				'alert_type' => 'warning',
-				'heading' => esc_html__( 'Category Switch is Disabled', 'textdomain' ),
+				'heading' => esc_html__( 'Category Switch is Disabled', 'blogkit' ),
 				'content' => esc_html__( 'Please enable Category Switch to use this feature.', 'blogkit' ),
                 'condition' => [
                     'show_category!' => 'yes',
@@ -452,7 +452,7 @@ class Main extends Widget_Base
 			[
 				'type' => \Elementor\Controls_Manager::ALERT,
 				'alert_type' => 'warning',
-				'heading' => esc_html__( 'Title Switch is Disabled', 'textdomain' ),
+				'heading' => esc_html__( 'Title Switch is Disabled', 'blogkit' ),
 				'content' => esc_html__( 'Please enable Title Switch to use this feature.', 'blogkit' ),
                 'condition' => [
                     'show_title!' => 'yes',
@@ -662,7 +662,7 @@ class Main extends Widget_Base
 			[
 				'type' => \Elementor\Controls_Manager::ALERT,
 				'alert_type' => 'warning',
-				'heading' => esc_html__( 'Title Switch is Disabled', 'textdomain' ),
+				'heading' => esc_html__( 'Title Switch is Disabled', 'blogkit' ),
 				'content' => esc_html__( 'Please enable Title Switch to use this feature.', 'blogkit' ),
                 'condition' => [
                     'show_title!' => 'yes',
@@ -781,7 +781,7 @@ class Main extends Widget_Base
             [
                 'type' => \Elementor\Controls_Manager::ALERT,
                 'alert_type' => 'warning',
-                'heading' => esc_html__('Category Switch is Disabled', 'textdomain'),
+                'heading' => esc_html__('Category Switch is Disabled', 'blogkit'),
                 'content' => esc_html__('Please enable Category Switch to use this feature.', 'blogkit'),
                 'condition' => [
                     'show_category!' => 'yes',
@@ -898,7 +898,7 @@ class Main extends Widget_Base
             [
                 'type' => \Elementor\Controls_Manager::ALERT,
                 'alert_type' => 'warning',
-                'heading' => esc_html__('Title Switch is Disabled', 'textdomain'),
+                'heading' => esc_html__('Title Switch is Disabled', 'blogkit'),
                 'content' => esc_html__('Please enable Title Switch to use this feature.', 'blogkit'),
                 'condition' => [
                     'show_title!' => 'yes',
@@ -1020,7 +1020,7 @@ class Main extends Widget_Base
             [
                 'type' => \Elementor\Controls_Manager::ALERT,
                 'alert_type' => 'warning',
-                'heading' => esc_html__('Category Switch is Disabled', 'textdomain'),
+                'heading' => esc_html__('Category Switch is Disabled', 'blogkit'),
                 'content' => esc_html__('Please enable Category Switch to use this feature.', 'blogkit'),
                 'condition' => [
                     'show_category!' => 'yes',
@@ -1134,7 +1134,7 @@ class Main extends Widget_Base
             [
                 'type' => \Elementor\Controls_Manager::ALERT,
                 'alert_type' => 'warning',
-                'heading' => esc_html__('Title Switch is Disabled', 'textdomain'),
+                'heading' => esc_html__('Title Switch is Disabled', 'blogkit'),
                 'content' => esc_html__('Please enable Title Switch to use this feature.', 'blogkit'),
                 'condition' => [
                     'show_title!' => 'yes',

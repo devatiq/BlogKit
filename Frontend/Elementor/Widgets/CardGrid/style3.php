@@ -9,7 +9,7 @@ use Elementor\Icons_Manager;
  */
 
 $settings = $this->get_settings_for_display();
-$title_tag = $settings['title_tag'];
+$title_tag = in_array($settings['title_tag'] ?? 'h3', ['h1','h2','h3','h4','h5','h6','div','span','p'], true) ? $settings['title_tag'] : 'h3';
 
 // Pagination setup
 $paged = 1;
@@ -49,7 +49,7 @@ if ($query->have_posts()):
             ?>
             <div class="blogkit-featured-post">
                 <div class="blogkit-featured-thumb<?php echo ( ! $featured_has_thumb && $fallback_enabled ) ? ' blogkit-fallback-thumb' : ''; ?>">
-                    <a href="<?php echo get_permalink($featured_post); ?>">
+                    <a href="<?php echo esc_url( get_permalink($featured_post) ); ?>">
                         <?php
                         if ( $featured_has_thumb ) {
                             echo get_the_post_thumbnail($featured_post, 'large');
@@ -72,7 +72,7 @@ if ($query->have_posts()):
                     <?php endif; ?>
 
                     <<?php echo $title_tag; ?> class="blogkit-featured-title">
-                        <a href="<?php echo get_permalink($featured_post); ?>">
+                        <a href="<?php echo esc_url( get_permalink($featured_post) ); ?>">
                             <?php echo esc_html($featured_post->post_title); ?>
                         </a>
                     </<?php echo $title_tag; ?>>
@@ -124,7 +124,7 @@ if ($query->have_posts()):
 
                         <<?php echo $title_tag; ?>
                             class="blogkit-card-grid-title"><a
-                                href="<?php echo get_permalink($post->ID); ?>"><?php echo esc_html(get_the_title($post->ID)); ?></a></<?php echo $title_tag; ?>>
+                                href="<?php echo esc_url( get_permalink($post->ID) ); ?>"><?php echo esc_html(get_the_title($post->ID)); ?></a></<?php echo $title_tag; ?>>
 
                     </div>
 

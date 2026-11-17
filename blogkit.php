@@ -2,7 +2,7 @@
 /**
  * Plugin Name: BlogKit - Advanced Blog Elements for Elementor
  * Description: A powerful toolkit for enhancing your WordPress blog with custom features and performance improvements.
- * Version: 1.3.2
+ * Version: 1.3.3
  * Author: Nexiby LLC
  * Author URI: https://nexiby.com
  * License: GPLv2 or later
@@ -58,7 +58,7 @@ final class BlogKit
      */
     private function define_constants()
     {
-        define('BLOGKIT_VERSION', '1.3.1');
+        define('BLOGKIT_VERSION', '1.3.3');
         define('BLOGKIT_PATH', plugin_dir_path(__FILE__));
         define('BLOGKIT_URL', plugin_dir_url(__FILE__));
         define('BLOGKIT_BASENAME', plugin_basename(__FILE__));
@@ -101,7 +101,7 @@ final class BlogKit
             add_action('admin_notices', function () {
                 $elementor_url = admin_url('plugin-install.php?s=elementor&tab=search&type=term');
                 echo '<div class="notice notice-error is-dismissible">';
-                echo '<p><strong>' . BLOGKIT_NAME . '</strong> requires <a href="' . esc_url($elementor_url) . '" target="_blank">Elementor</a> to be installed and activated.</p>';
+                echo '<p><strong>' . esc_html(BLOGKIT_NAME) . '</strong> requires <a href="' . esc_url($elementor_url) . '" target="_blank">Elementor</a> to be installed and activated.</p>';
                 echo '</div>';
             });
         }
@@ -145,7 +145,7 @@ if (!function_exists('blogkit_initialize')) {
 // Enable media uploader on Category add/edit pages
 function blogkit_enqueue_category_media($hook) {
     if ($hook === 'edit-tags.php' || $hook === 'term.php') {
-        if (isset($_GET['taxonomy']) && $_GET['taxonomy'] === 'category') {
+        if (isset($_GET['taxonomy']) && 'category' === sanitize_key(wp_unslash($_GET['taxonomy']))) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
             wp_enqueue_media();
             wp_enqueue_script('jquery');
         }
@@ -156,9 +156,9 @@ add_action('admin_enqueue_scripts', 'blogkit_enqueue_category_media');
 // Add Image Field to "Add New Category"
 function blogkit_add_category_image_field() { ?>
     <div class="form-field">
-        <label for="cat-image">Category Image</label>
+        <label for="cat-image"><?php esc_html_e('Category Image', 'blogkit'); ?></label>
         <input type="text" name="cat-image" id="cat-image" value="" />
-        <button style="margin-top: 10px;" class="button upload-cat-image">Upload Image</button>
+        <button style="margin-top: 10px;" class="button upload-cat-image"><?php esc_html_e('Upload Image', 'blogkit'); ?></button>
     </div>
 
     <script>
@@ -192,10 +192,10 @@ add_action('category_add_form_fields', 'blogkit_add_category_image_field');
 function blogkit_edit_category_image_field($term) {
     $value = get_term_meta($term->term_id, 'cat-image', true); ?>
     <tr class="form-field">
-        <th scope="row"><label for="cat-image">Category Image</label></th>
+        <th scope="row"><label for="cat-image"><?php esc_html_e('Category Image', 'blogkit'); ?></label></th>
         <td>
             <input type="text" name="cat-image" id="cat-image" value="<?php echo esc_attr($value); ?>" />
-            <button style="margin-top: 10px;" class="button upload-cat-image">Upload Image</button>
+            <button style="margin-top: 10px;" class="button upload-cat-image"><?php esc_html_e('Upload Image', 'blogkit'); ?></button>
             <?php if ($value): ?>
                 <br><img src="<?php echo esc_url($value); ?>" style="max-width:120px;margin-top:10px;" />
             <?php endif; ?>
@@ -239,8 +239,17 @@ add_action('category_edit_form_fields', 'blogkit_edit_category_image_field');
 
 // Save Image URL
 function blogkit_save_category_image($term_id) {
-    if (isset($_POST['cat-image'])) {
-        update_term_meta($term_id, 'cat-image', sanitize_text_field($_POST['cat-image']));
+    if (!current_user_can('manage_categories')) {
+        return;
+    }
+    // Nonce is verified by core's term add/edit handlers before these hooks fire.
+    if (isset($_POST['cat-image'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $image = esc_url_raw(wp_unslash($_POST['cat-image'])); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        if ('' === $image) {
+            delete_term_meta($term_id, 'cat-image');
+        } else {
+            update_term_meta($term_id, 'cat-image', $image);
+        }
     }
 }
 add_action('created_category', 'blogkit_save_category_image');

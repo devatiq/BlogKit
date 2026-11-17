@@ -10,6 +10,7 @@ $settings = $this->get_settings_for_display();
 $query_args = [
     'post_type' => 'post',
     'posts_per_page' => $settings['posts_per_page'] ?? 6,
+    'no_found_rows' => true,
     'orderby' => $settings['orderby'] ?? 'date',
     'order' => $settings['order'] ?? 'DESC',
 ];

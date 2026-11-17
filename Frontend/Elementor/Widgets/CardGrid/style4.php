@@ -9,7 +9,7 @@ use Elementor\Icons_Manager;
  */
 
 $settings = $this->get_settings_for_display();
-$title_tag = $settings['title_tag'];
+$title_tag = in_array($settings['title_tag'] ?? 'h3', ['h1','h2','h3','h4','h5','h6','div','span','p'], true) ? $settings['title_tag'] : 'h3';
 
 // Pagination setup
 $paged = 1;

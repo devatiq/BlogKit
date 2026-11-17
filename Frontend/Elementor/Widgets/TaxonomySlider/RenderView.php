@@ -62,7 +62,7 @@ $swiper_settings = wp_json_encode([
                 $img = get_term_meta($term->term_id, 'cat-image', true);
                 ?>
                 <div class="swiper-slide blogkit-taxonomy-item">
-                    <a href="<?php echo get_category_link($term->term_id); ?>">
+                    <a href="<?php echo esc_url( get_category_link($term->term_id) ); ?>">
                         <div class="image-box">
                             <?php if ($img): ?>
                                 <img src="<?php echo esc_url($img); ?>" alt="<?php echo esc_attr($term->name); ?>">
