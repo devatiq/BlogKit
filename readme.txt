@@ -4,7 +4,7 @@ Tags: elementor, grid posts, custom post layout, blog design
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.3
+Stable tag: 1.3.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,6 +54,10 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 
 
 == Changelog ==
+= 1.3.4 =
+* New - Post widgets (Blog Grid, Blog Classic Grid, Post Card, Card Grid, Featured Grid, Smart Posts List) now have extra query options: Post Types, Tags, Authors, Exclude Posts and Date Range.
+* Fix - Added missing direct-access guards to the Featured Grid template and SVG helper.
+
 = 1.3.3 =
 * Security - Title HTML tag setting is now restricted to an allowed list (h1-h6, div, span, p).
 * Security - Post links, category links and read-more text are now escaped on output.
@@ -97,6 +101,9 @@ Yes, all BlogKit widgets come with extensive styling options in the Elementor ed
 * Added styling options
 
 == Upgrade Notice ==
+
+= 1.3.4 =
+Adds extra query options to the post widgets.
 
 = 1.3.3 =
 Security hardening and bug fixes. Update recommended.

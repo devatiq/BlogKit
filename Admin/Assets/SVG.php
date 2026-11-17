@@ -1,6 +1,10 @@
 <?php
 namespace BlogKit\Admin\Assets;
 
+if (!defined('ABSPATH')) {
+    exit; // Exit if accessed directly.
+}
+
 class SVG
 {
     public function __construct()

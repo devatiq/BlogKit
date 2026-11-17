@@ -45,3 +45,4 @@ postcss.config.js
 .wordpress-org
 FUTURE-FEATURES.md
 *.md
+tests
