@@ -4,7 +4,7 @@ Tags: blog grid, post grid, blog layout, posts widget, page builder
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.10
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -76,6 +76,10 @@ BlogKit does not connect to any external service. All scripts, styles and icons 
 "BlogKit" is an original name: a "kit" of blog widgets. "Elementor" is named only to say that this plugin is an add-on that works with the Elementor page builder. BlogKit is not made by or affiliated with Elementor Ltd.
 
 == Changelog ==
+= 1.4.0 =
+* New - Post format badge (Video, Audio, Gallery...) for Post Card, Card Grid (style 1) and Post Carousel.
+* New - Settings > BlogKit: accent color for the load more button, filter tabs and Post Carousel.
+
 = 1.3.10 =
 * New - Filter tabs can now filter by Tag as well as Category.
 * New - Settings > BlogKit: Fallback image for the Post Carousel (posts without a featured image).
@@ -147,6 +151,9 @@ BlogKit does not connect to any external service. All scripts, styles and icons 
 * Added styling options
 
 == Upgrade Notice ==
+
+= 1.4.0 =
+Adds a post format badge and an accent color setting.
 
 = 1.3.10 =
 Adds tag filter tabs and a fallback image setting.
