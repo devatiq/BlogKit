@@ -12,6 +12,7 @@ class Settings
 {
     const GROUP = 'blogkit_settings';
     const PAGE = 'blogkit';
+    const FALLBACK_OPTION = 'blogkit_fallback_image';
 
     public function __construct()
     {
@@ -41,6 +42,17 @@ class Settings
         ];
     }
 
+    /**
+     * Fallback image URL for posts without a featured image (empty = built-in placeholder).
+     *
+     * @return string
+     */
+    public static function fallback_image()
+    {
+        $url = (string) get_option(self::FALLBACK_OPTION, '');
+        return '' !== $url ? $url : BLOGKIT_ELEMENTOR_ASSETS . '/img/placeholder.png';
+    }
+
     public function add_menu()
     {
         add_options_page(
@@ -54,6 +66,12 @@ class Settings
 
     public function register()
     {
+        register_setting(self::GROUP, self::FALLBACK_OPTION, [
+            'type' => 'string',
+            'default' => '',
+            'sanitize_callback' => 'esc_url_raw',
+        ]);
+
         foreach (array_keys(self::widgets()) as $option) {
             register_setting(self::GROUP, $option, [
                 'type' => 'integer',
@@ -103,6 +121,13 @@ class Settings
                             </td>
                         </tr>
                     <?php endforeach; ?>
+                    <tr>
+                        <th scope="row"><label for="<?php echo esc_attr(self::FALLBACK_OPTION); ?>"><?php echo esc_html__('Fallback image', 'blogkit'); ?></label></th>
+                        <td>
+                            <input type="url" class="regular-text" id="<?php echo esc_attr(self::FALLBACK_OPTION); ?>" name="<?php echo esc_attr(self::FALLBACK_OPTION); ?>" value="<?php echo esc_attr((string) get_option(self::FALLBACK_OPTION, '')); ?>" placeholder="https://">
+                            <p class="description"><?php echo esc_html__('Image URL used by the Post Carousel for posts without a featured image. Leave empty for the built-in placeholder.', 'blogkit'); ?></p>
+                        </td>
+                    </tr>
                 </table>
                 <?php submit_button(); ?>
             </form>

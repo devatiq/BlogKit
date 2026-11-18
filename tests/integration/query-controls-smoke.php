@@ -117,4 +117,31 @@ $conf = file_get_contents(BLOGKIT_PATH . 'Frontend/Elementor/Configuration.php')
 $missing = array_filter($opts, function ($o) use ($conf) { return false === strpos($conf, "'$o'"); });
 $check(10 === count($opts) && [] === $missing, 'Settings page lists every widget option used by Configuration');
 $check(0 === \BlogKit\Admin\Settings::sanitize_toggle(null) && 0 === \BlogKit\Admin\Settings::sanitize_toggle('') && 1 === \BlogKit\Admin\Settings::sanitize_toggle('1'), 'settings toggle sanitizer');
+// Tag filter tabs.
+$tg = wp_insert_term('BK Tag Test', 'post_tag');
+$tag_slug = get_term($tg['term_id'])->slug;
+$tp = wp_insert_post(['post_title' => 'BK tag post', 'post_status' => 'publish', 'tags_input' => [$tag_slug]]);
+$c = $fw->get_controls();
+$check(isset($c['blogkit_filter_taxonomy']), 'filter taxonomy control exists');
+$tag_on = ['blogkit_show_filter' => 'yes', 'blogkit_filter_taxonomy' => 'post_tag'];
+$_GET['blogkit_f_ft1'] = $tag_slug;
+$a = $fa->invoke($fw, ['tag_slug__in' => ['x'], 'category_name' => 'keep'], $tag_on);
+$check($a['tag_slug__in'] === [$tag_slug] && 'keep' === $a['category_name'], 'tag filter sets tag_slug__in and leaves category alone');
+$_GET['blogkit_f_ft1'] = 'uncategorized';
+$a = $fa->invoke($fw, [], $tag_on);
+$check([] === $a, 'category slug is not accepted in tag mode');
+$_GET['blogkit_f_ft1'] = $tag_slug;
+ob_start();
+$fb->invoke($fw, $tag_on + ['blogkit_tags' => [$tag_slug]]);
+$html = ob_get_clean();
+$check(false !== strpos($html, 'data-slug="' . $tag_slug . '"') && false === strpos($html, 'data-slug="uncategorized"'), 'tag tabs list only tags');
+$_GET = [];
+wp_delete_post($tp, true);
+wp_delete_term($tg['term_id'], 'post_tag');
+// Fallback image setting.
+delete_option('blogkit_fallback_image');
+$check(false !== strpos(\BlogKit\Admin\Settings::fallback_image(), 'placeholder.png'), 'fallback image defaults to built-in placeholder');
+update_option('blogkit_fallback_image', 'https://example.com/fb.jpg');
+$check('https://example.com/fb.jpg' === \BlogKit\Admin\Settings::fallback_image(), 'fallback image setting is used');
+delete_option('blogkit_fallback_image');
 exit($fail ? 1 : 0);

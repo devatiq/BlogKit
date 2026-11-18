@@ -69,7 +69,7 @@ $uid = 'blogkit-pc-' . sanitize_key($this->get_id());
                                 if (has_post_thumbnail()) {
                                     echo wp_kses_post(get_the_post_thumbnail(null, 'medium_large'));
                                 } else {
-                                    echo '<img src="' . esc_url(BLOGKIT_ELEMENTOR_ASSETS . '/img/placeholder.png') . '" alt="" loading="lazy">';
+                                    echo '<img src="' . esc_url(\BlogKit\Admin\Settings::fallback_image()) . '" alt="" loading="lazy">';
                                 }
                                 ?>
                             </a>

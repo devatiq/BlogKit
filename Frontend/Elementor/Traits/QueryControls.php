@@ -367,14 +367,28 @@ trait QueryControls
         $this->add_control(
             'blogkit_show_filter',
             [
-                'label' => esc_html__('Category Filter Tabs', 'blogkit'),
+                'label' => esc_html__('Filter Tabs', 'blogkit'),
                 'type' => Controls_Manager::SWITCHER,
                 'label_on' => esc_html__('Show', 'blogkit'),
                 'label_off' => esc_html__('Hide', 'blogkit'),
                 'return_value' => 'yes',
                 'default' => '',
-                'description' => esc_html__('Shows the selected categories (or the most used ones) as tabs.', 'blogkit'),
+                'description' => esc_html__('Shows the selected categories or tags (or the most used ones) as tabs.', 'blogkit'),
                 'condition' => $condition,
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_filter_taxonomy',
+            [
+                'label' => esc_html__('Filter By', 'blogkit'),
+                'type' => Controls_Manager::SELECT,
+                'default' => 'category',
+                'options' => [
+                    'category' => esc_html__('Category', 'blogkit'),
+                    'post_tag' => esc_html__('Tag', 'blogkit'),
+                ],
+                'condition' => $condition + ['blogkit_show_filter' => 'yes'],
             ]
         );
 
@@ -431,9 +445,11 @@ trait QueryControls
      */
     private function blogkit_get_filter_terms(array $settings)
     {
-        $args = ['taxonomy' => 'category', 'hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC'];
-        if (!empty($settings['category']) && is_array($settings['category'])) {
-            $args['slug'] = array_map('sanitize_title', $settings['category']);
+        $taxonomy = $this->blogkit_filter_taxonomy($settings);
+        $args = ['taxonomy' => $taxonomy, 'hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC'];
+        $chosen = 'post_tag' === $taxonomy ? ($settings['blogkit_tags'] ?? []) : ($settings['category'] ?? []);
+        if (!empty($chosen) && is_array($chosen)) {
+            $args['slug'] = array_map('sanitize_title', $chosen);
         }
         $terms = get_terms($args);
         $out = [];
@@ -443,6 +459,17 @@ trait QueryControls
             }
         }
         return $out;
+    }
+
+    /**
+     * Taxonomy used by the filter tabs.
+     *
+     * @param array $settings Widget settings.
+     * @return string category|post_tag
+     */
+    private function blogkit_filter_taxonomy(array $settings)
+    {
+        return 'post_tag' === ($settings['blogkit_filter_taxonomy'] ?? 'category') ? 'post_tag' : 'category';
     }
 
     /**
@@ -482,7 +509,11 @@ trait QueryControls
     {
         $state = $this->blogkit_get_filter_state($settings);
         if ('' !== $state['cat']) {
-            $args['category_name'] = $state['cat'];
+            if ('post_tag' === $this->blogkit_filter_taxonomy($settings)) {
+                $args['tag_slug__in'] = [$state['cat']];
+            } else {
+                $args['category_name'] = $state['cat'];
+            }
         }
         if ('' !== $state['search']) {
             $args['s'] = $state['search'];
