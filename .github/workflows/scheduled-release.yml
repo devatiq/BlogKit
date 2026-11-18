@@ -5,6 +5,7 @@ name: Scheduled Release
 #   2026-12-02 -> 1.3.5
 #   2026-12-09 -> 1.3.6
 #   2026-12-16 -> 1.3.7
+#   2026-12-23 -> 1.3.8
 # The tag must already exist. A release created with GITHUB_TOKEN does not trigger
 # other workflows, so the deploy workflow is called directly instead of relying on
 # the "release published" event.
@@ -15,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: Existing tag to release now (e.g. 1.3.7)
+        description: Existing tag to release now (e.g. 1.3.8)
         required: true
         type: string
 
@@ -43,10 +44,12 @@ jobs:
               2026-12-02) TAG="1.3.5" ;;
               2026-12-09) TAG="1.3.6" ;;
               2026-12-16) TAG="1.3.7" ;;
+              2026-12-23) TAG="1.3.8" ;;
               *) TAG="" ;;
             esac
           fi
           case "$TAG" in
+            1.3.8) NOTES="Optional reading time (N min read) for Blog Grid, Post Card and Card Grid, with a words-per-minute setting." ;;
             1.3.7) NOTES="Optional Schema Markup (schema.org ItemList JSON-LD) for the post widgets. Off by default." ;;
             1.3.6) NOTES="Load more button and infinite scroll pagination for Blog Grid, Post Card, Card Grid and Smart Posts List, plus a fix for a wrong No posts found message." ;;
             1.3.5) NOTES="Packaging and readme fixes: own autoloader instead of the Composer vendor folder, readme Screenshots, Source code, Privacy, External services and Trademarks sections, GPL license file. No functional changes." ;;
