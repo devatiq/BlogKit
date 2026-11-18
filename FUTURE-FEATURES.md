@@ -1,20 +1,20 @@
-# BlogKit – Future Feature List
-
-Status: ideas only, not committed to a release. Review one by one.
+# BlogKit – Feature List
 
 **Out of scope:** Theme Builder / Query Loop template support. Handled by the separate Prime Builder plugin.
 
-| # | Feature | Notes | Decision |
-|---|---------|-------|----------|
-| 1 | AJAX "Load more" / infinite scroll | Blog Grid, Post Card, Card Grid (style 1), Smart Posts List. Fetches the next ?paged=N page, no extra endpoint | Done (unreleased) |
-| 2 | Live search + category or tag filter tabs (Blog Grid, Post Card, Card Grid style 1, Smart Posts List) | Done (tag filter unreleased) |
-| 3 | Extra query options: tags, authors, date range, exclude posts, custom post types | Done (unreleased). Shared trait `Frontend/Elementor/Traits/QueryControls.php`, 6 widgets | Done (1.3.4) |
-| 4 | Reading time (done in 1.3.8), post-format badge (Post Card, Card Grid style 1, Post Carousel; unreleased) | View count not done: a view counter needs a database write on every page view | Partly done |
-| 5 | Post Carousel widget (Swiper) | Done (unreleased) | Done |
-| 6 | Skeleton loading + lazy-load images | | TBD |
-| 7 | Schema.org markup (opt-in ItemList JSON-LD, 6 widgets); heading tag is already selectable | Done (unreleased) |
-| 8 | Settings → BlogKit page with widget on/off toggles | Done in 1.3.9. Fallback image URL for the Post Carousel done (unreleased). Default colors not done | Partly done |
-| 9 | Gutenberg block version | Works without Elementor | TBD |
+| # | Feature | Status |
+|---|---------|--------|
+| 1 | AJAX "Load more" / infinite scroll (Blog Grid, Post Card, Card Grid style 1, Smart Posts List) | Done, 1.3.6 |
+| 2 | Live search + category/tag filter tabs (same four widgets) | Done, 1.3.9 (tag filter 1.3.10) |
+| 3 | Extra query options: post types, tags, authors, exclude posts, date range | Done, 1.3.4 |
+| 4 | Reading time | Done, 1.3.8 |
+| 4b | Post format badge (Post Card, Card Grid style 1, Post Carousel) | Done, unreleased |
+| 5 | Post Carousel widget (Swiper) | Done, 1.3.9 |
+| 6 | Skeleton loading + lazy-load images | Skipped: WordPress already lazy-loads thumbnails |
+| 7 | Schema.org ItemList JSON-LD (opt-in) | Done, 1.3.7 |
+| 8 | Settings → BlogKit: widget on/off (1.3.9), fallback image (1.3.10), accent color (unreleased) | Done |
+| 9 | Gutenberg block version | Skipped: needs its own build tooling |
+| 10 | View count | Skipped: needs a database write on every page view |
 
 ## Technical follow-ups (from the 1.3.3 audit)
 - Load `style.css` only on pages that use a BlogKit widget (`get_style_depends()`).
