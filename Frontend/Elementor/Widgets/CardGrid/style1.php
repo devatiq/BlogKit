@@ -86,6 +86,7 @@ if ($query->have_posts()):
                         <?php the_author(); ?></span>
                     <span class="blogkit-card-grid-meta-date"><?php echo SVG::Calender();
                     echo get_the_date('M j, Y'); ?> </span>
+                    <?php $this->blogkit_render_reading_time($settings); ?>
                     <span class="blogkit-card-grid-meta-comments">
                         <?php echo SVG::Comments();
                         comments_number('No Comments', '1', '%'); ?></span>

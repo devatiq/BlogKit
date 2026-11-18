@@ -1206,3 +1206,9 @@
 .blogkit-load-more-wrap[data-done] {
     display: none;
 }
+
+.blogkit-reading-time {
+    margin: 0 8px;
+    font-size: 0.9em;
+    opacity: .85;
+}

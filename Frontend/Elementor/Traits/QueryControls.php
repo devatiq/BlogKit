@@ -283,6 +283,81 @@ trait QueryControls
     }
 
     /**
+     * Register the reading time controls.
+     *
+     * @param array $condition Optional Elementor condition for the controls.
+     */
+    protected function blogkit_register_reading_time_controls(array $condition = [])
+    {
+        $this->add_control(
+            'blogkit_show_reading_time',
+            [
+                'label' => esc_html__('Show Reading Time', 'blogkit'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'blogkit'),
+                'label_off' => esc_html__('Hide', 'blogkit'),
+                'return_value' => 'yes',
+                'default' => '',
+                'condition' => $condition,
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_words_per_minute',
+            [
+                'label' => esc_html__('Words Per Minute', 'blogkit'),
+                'type' => Controls_Manager::NUMBER,
+                'default' => 200,
+                'min' => 100,
+                'max' => 400,
+                'condition' => $condition + ['blogkit_show_reading_time' => 'yes'],
+            ]
+        );
+    }
+
+    /**
+     * Estimated reading time in minutes (at least 1).
+     *
+     * @param int $post_id Post ID.
+     * @param int $wpm     Words per minute.
+     * @return int
+     */
+    protected function blogkit_get_reading_time($post_id, $wpm = 200)
+    {
+        $wpm = min(400, max(100, (int) $wpm));
+        $text = wp_strip_all_tags(strip_shortcodes((string) get_post_field('post_content', $post_id)));
+        $words = preg_split('/\s+/u', trim($text), -1, PREG_SPLIT_NO_EMPTY);
+        $count = is_array($words) ? count($words) : 0;
+
+        return max(1, (int) ceil($count / $wpm));
+    }
+
+    /**
+     * Output the reading time for the current post (inside the loop).
+     *
+     * @param array $settings Widget settings.
+     */
+    protected function blogkit_render_reading_time(array $settings)
+    {
+        if (empty($settings['blogkit_show_reading_time']) || 'yes' !== $settings['blogkit_show_reading_time']) {
+            return;
+        }
+
+        $minutes = $this->blogkit_get_reading_time(get_the_ID(), isset($settings['blogkit_words_per_minute']) ? $settings['blogkit_words_per_minute'] : 200);
+
+        printf(
+            '<span class="blogkit-reading-time">%s</span>',
+            esc_html(
+                sprintf(
+                    /* translators: %d: number of minutes. */
+                    _n('%d min read', '%d min read', $minutes, 'blogkit'),
+                    $minutes
+                )
+            )
+        );
+    }
+
+    /**
      * Public post types (attachments excluded).
      */
     private function blogkit_get_post_type_options()

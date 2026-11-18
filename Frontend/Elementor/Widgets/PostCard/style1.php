@@ -89,6 +89,7 @@ if ($query->have_posts()):
                     } else {
                         echo '<span>' . get_the_date('M j, Y') . '<span>';
                     }
+                    $this->blogkit_render_reading_time($settings);
                     ?>
 
                 </div>

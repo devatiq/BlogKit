@@ -51,4 +51,20 @@ preg_match('#>\s*(\{.*\})\s*</script>#s', $on, $mm);
 $json = json_decode($mm[1] ?? '', true);
 $check(is_array($json) && 'ItemList' === $json['@type'] && 1 === $json['itemListElement'][0]['position'], 'schema is valid JSON ItemList');
 wp_delete_post($tid, true);
+foreach (['BlogGrid', 'PostCard', 'CardGrid'] as $name) {
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
+    $c = (new $class())->get_controls();
+    $check(isset($c['blogkit_show_reading_time'], $c['blogkit_words_per_minute']), "$name has reading time controls");
+}
+$rt = new ReflectionMethod($w, 'blogkit_get_reading_time');
+$rt->setAccessible(true);
+$p1 = wp_insert_post(['post_title' => 'RT 450', 'post_status' => 'publish', 'post_content' => '<p>' . trim(str_repeat('word ', 450)) . '</p>[gallery]']);
+$p2 = wp_insert_post(['post_title' => 'RT empty', 'post_status' => 'publish', 'post_content' => '']);
+$p3 = wp_insert_post(['post_title' => 'RT bn', 'post_status' => 'publish', 'post_content' => trim(str_repeat('বাংলা লেখা ', 150))]);
+$check(3 === $rt->invoke($w, $p1, 200), '450 words at 200 wpm = 3 min');
+$check(2 === $rt->invoke($w, $p1, 250), '450 words at 250 wpm = 2 min');
+$check(2 === $rt->invoke($w, $p1, 9999), 'wpm clamped to 400 max (450 words = 2 min)');
+$check(1 === $rt->invoke($w, $p2, 200), 'empty post = 1 min minimum');
+$check(2 === $rt->invoke($w, $p3, 200), 'unicode (Bengali) words counted (300 words = 2 min)');
+foreach ([$p1, $p2, $p3] as $pid) { wp_delete_post($pid, true); }
 exit($fail ? 1 : 0);

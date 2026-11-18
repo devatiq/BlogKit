@@ -51,6 +51,7 @@ if ($query->have_posts()) :
                     <span class="posted-by">
                         <i class="fa fa-user"></i> <?php the_author(); ?>
                     </span>
+                    <?php $this->blogkit_render_reading_time($settings); ?>
                     <span class="comment-link">
                         <i class="fa fa-comments"></i> <?php comments_number(); ?>
                     </span>
