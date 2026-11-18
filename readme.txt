@@ -4,7 +4,7 @@ Tags: blog grid, post grid, blog layout, posts widget, page builder
 Requires at least: 5.8
 Tested up to: 7.1
 Requires PHP: 8.0
-Stable tag: 1.3.7
+Stable tag: 1.3.8
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -75,6 +75,9 @@ BlogKit does not connect to any external service. All scripts, styles and icons 
 "BlogKit" is an original name: a "kit" of blog widgets. "Elementor" is named only to say that this plugin is an add-on that works with the Elementor page builder. BlogKit is not made by or affiliated with Elementor Ltd.
 
 == Changelog ==
+= 1.3.8 =
+* New - Optional reading time ("N min read") for Blog Grid, Post Card and Card Grid (style 1), with a words-per-minute setting.
+
 = 1.3.7 =
 * New - Optional Schema Markup switch (schema.org ItemList JSON-LD) for Blog Grid, Blog Classic Grid, Post Card, Card Grid, Featured Grid and Smart Posts List. Off by default.
 
@@ -134,6 +137,9 @@ BlogKit does not connect to any external service. All scripts, styles and icons 
 * Added styling options
 
 == Upgrade Notice ==
+
+= 1.3.8 =
+Adds optional reading time to the post widgets.
 
 = 1.3.7 =
 Adds optional schema.org markup for post lists.
