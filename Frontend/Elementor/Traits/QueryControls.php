@@ -163,6 +163,12 @@ trait QueryControls
      */
     protected function blogkit_apply_query_args(array $args, array $settings)
     {
+        // Never let a widget load an unbounded number of posts (-1, 9999...).
+        if (isset($args['posts_per_page'])) {
+            $per_page = (int) $args['posts_per_page'];
+            $args['posts_per_page'] = $per_page < 1 ? 100 : min(100, $per_page);
+        }
+
         // Post types (only registered, public types).
         if (!empty($settings['blogkit_post_types']) && is_array($settings['blogkit_post_types'])) {
             $types = array_values(array_intersect(
@@ -443,9 +449,15 @@ trait QueryControls
      * @param array $settings Widget settings.
      * @return array<string,string> slug => name
      */
+    private $blogkit_filter_terms_cache = [];
+
     private function blogkit_get_filter_terms(array $settings)
     {
         $taxonomy = $this->blogkit_filter_taxonomy($settings);
+        $cache_key = $taxonomy . '|' . wp_json_encode('post_tag' === $taxonomy ? ($settings['blogkit_tags'] ?? []) : ($settings['category'] ?? []));
+        if (isset($this->blogkit_filter_terms_cache[$cache_key])) {
+            return $this->blogkit_filter_terms_cache[$cache_key];
+        }
         $args = ['taxonomy' => $taxonomy, 'hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC'];
         $chosen = 'post_tag' === $taxonomy ? ($settings['blogkit_tags'] ?? []) : ($settings['category'] ?? []);
         if (!empty($chosen) && is_array($chosen)) {
@@ -458,6 +470,7 @@ trait QueryControls
                 $out[$term->slug] = $term->name;
             }
         }
+        $this->blogkit_filter_terms_cache[$cache_key] = $out;
         return $out;
     }
 
@@ -641,6 +654,10 @@ trait QueryControls
      */
     private function blogkit_get_tag_options()
     {
+        // Editor panel only; avoids a query on every frontend render.
+        if (!is_admin()) {
+            return [];
+        }
         $options = [];
         $tags = get_tags(['hide_empty' => false, 'number' => 200, 'orderby' => 'count', 'order' => 'DESC']);
         if (is_array($tags)) {
@@ -656,6 +673,10 @@ trait QueryControls
      */
     private function blogkit_get_author_options()
     {
+        // Editor panel only; avoids a query on every frontend render.
+        if (!is_admin()) {
+            return [];
+        }
         $options = [];
         $users = get_users([
             'capability' => ['edit_posts'],

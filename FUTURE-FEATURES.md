@@ -17,7 +17,6 @@
 | 10 | View count | Skipped: needs a database write on every page view |
 
 ## Technical follow-ups (from the 1.3.3 audit)
-- Load `style.css` only on pages that use a BlogKit widget (`get_style_depends()`).
-- Cache `get_terms` results (transient) in Taxonomy Slider/List.
-- Cap `posts_per_page` (reject `-1`).
+- Done in 1.4.1: stylesheet loads only where a widget is used, posts per page capped at 100, no editor-dropdown queries on the frontend.
+- Not needed: caching `get_terms` in Taxonomy Slider/List (WordPress already caches term queries).
 - Wrap remaining SVG/title/excerpt output in `wp_kses` to clear Plugin Check `OutputNotEscaped`.

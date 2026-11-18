@@ -18,6 +18,11 @@ class Main extends Widget_Base
         return ['blogkit-load-more', 'blogkit-filter'];
     }
 
+    public function get_style_depends()
+    {
+        return ['blogkit-elementor-style'];
+    }
+
     public function get_name()
     {
         return 'blogkit-post-card';
@@ -934,6 +939,10 @@ class Main extends Widget_Base
      */
     private function get_blogkit_categories()
     {
+        // Options are only needed by the editor panel; skip the queries on the frontend.
+        if (!is_admin()) {
+            return [];
+        }
         $categories = get_categories(['hide_empty' => false]);
         $cats = [];
         if ($categories) {

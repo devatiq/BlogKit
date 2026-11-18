@@ -45,7 +45,7 @@ class Main extends Widget_Base
 
     public function get_style_depends()
     {
-        return ['blogkit-blog-grid'];
+        return ['blogkit-elementor-style'];
     }
 
     /**
@@ -438,6 +438,10 @@ class Main extends Widget_Base
      */
     private function get_blogkit_categories()
     {
+        // Options are only needed by the editor panel; skip the queries on the frontend.
+        if (!is_admin()) {
+            return [];
+        }
         $categories = get_categories(['hide_empty' => false]);
         $cats = [];
         if ($categories) {

@@ -73,7 +73,7 @@ class Assets
     public function enqueue_styles()
     {
         wp_register_style('swiper-bundle-css', BLOGKIT_ELEMENTOR_ASSETS . "/css/swiper-bundle.min.css", [], BLOGKIT_VERSION);
-        wp_enqueue_style('blogkit-elementor-style', BLOGKIT_ELEMENTOR_ASSETS . "/css/style.css", [], BLOGKIT_VERSION);
+        wp_register_style('blogkit-elementor-style', BLOGKIT_ELEMENTOR_ASSETS . "/css/style.css", [], BLOGKIT_VERSION);
         $accent = sanitize_hex_color((string) get_option('blogkit_accent_color', ''));
         if ($accent) {
             wp_add_inline_style('blogkit-elementor-style', ':root{--blogkit-accent:' . $accent . ';}');

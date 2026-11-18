@@ -14,6 +14,7 @@ class Settings
     const PAGE = 'blogkit';
     const FALLBACK_OPTION = 'blogkit_fallback_image';
     const ACCENT_OPTION = 'blogkit_accent_color';
+    const DELETE_OPTION = 'blogkit_delete_data';
 
     public function __construct()
     {
@@ -71,6 +72,12 @@ class Settings
             'type' => 'string',
             'default' => '',
             'sanitize_callback' => 'esc_url_raw',
+        ]);
+
+        register_setting(self::GROUP, self::DELETE_OPTION, [
+            'type' => 'integer',
+            'default' => 0,
+            'sanitize_callback' => [__CLASS__, 'sanitize_toggle'],
         ]);
 
         register_setting(self::GROUP, self::ACCENT_OPTION, [
@@ -152,6 +159,15 @@ class Settings
                         <td>
                             <input type="text" class="small-text" id="<?php echo esc_attr(self::ACCENT_OPTION); ?>" name="<?php echo esc_attr(self::ACCENT_OPTION); ?>" value="<?php echo esc_attr((string) get_option(self::ACCENT_OPTION, '')); ?>" placeholder="#1d9fb0" maxlength="7" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?">
                             <p class="description"><?php echo esc_html__('Hex color (for example #1d9fb0) for the load more button, filter tabs and the Post Carousel. Leave empty for the default.', 'blogkit'); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><?php echo esc_html__('Uninstall', 'blogkit'); ?></th>
+                        <td>
+                            <label for="<?php echo esc_attr(self::DELETE_OPTION); ?>">
+                                <input type="checkbox" id="<?php echo esc_attr(self::DELETE_OPTION); ?>" name="<?php echo esc_attr(self::DELETE_OPTION); ?>" value="1" <?php checked(1, (int) get_option(self::DELETE_OPTION, 0)); ?>>
+                                <?php echo esc_html__('Delete all BlogKit settings and category images when the plugin is deleted', 'blogkit'); ?>
+                            </label>
                         </td>
                     </tr>
                 </table>

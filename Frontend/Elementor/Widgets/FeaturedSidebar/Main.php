@@ -37,7 +37,7 @@ class Main extends Widget_Base
 
     public function get_style_depends()
     {
-        return ['blogkit-style-2', 'blogkit-responsive'];
+        return ['blogkit-elementor-style', 'blogkit-style-2', 'blogkit-responsive'];
     }
 
     /**
@@ -48,9 +48,16 @@ class Main extends Widget_Base
      */
     protected function get_all_posts()
     {
+        // Editor panel only, and never every post of a large site.
+        if (!is_admin()) {
+            return [];
+        }
         $posts = get_posts([
             'post_type' => 'post',
-            'numberposts' => -1,
+            'numberposts' => 300,
+            'orderby' => 'date',
+            'order' => 'DESC',
+            'no_found_rows' => true,
         ]);
     
         $options = [];

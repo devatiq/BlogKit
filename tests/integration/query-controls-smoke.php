@@ -146,7 +146,7 @@ $check('https://example.com/fb.jpg' === \BlogKit\Admin\Settings::fallback_image(
 delete_option('blogkit_fallback_image');
 // Format badge and accent color.
 foreach (['PostCard', 'CardGrid', 'PostCarousel'] as $name) {
-    $class = "\BlogKit\Frontend\Elementor\Widgets\\$name\Main";
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
     $check(isset((new $class())->get_controls()['blogkit_show_format_badge']), "$name has format badge control");
 }
 $fbm = new ReflectionMethod($w, 'blogkit_render_format_badge');
@@ -172,4 +172,35 @@ wp_reset_postdata();
 wp_delete_post($vp, true);
 wp_delete_post($sp, true);
 $check('#12ab9f' === \BlogKit\Admin\Settings::sanitize_color(' #12ab9f ') && '' === \BlogKit\Admin\Settings::sanitize_color('red; x') && '' === \BlogKit\Admin\Settings::sanitize_color(null), 'accent color sanitizer accepts hex only');
+// Audit 1.4.1: limits, frontend cost, conditional styles, uninstall.
+$a = $m->invoke($w, ['posts_per_page' => -1], []);
+$check(100 === $a['posts_per_page'], 'posts_per_page -1 is capped at 100');
+$a = $m->invoke($w, ['posts_per_page' => 99999], []);
+$check(100 === $a['posts_per_page'], 'posts_per_page 99999 is capped at 100');
+$a = $m->invoke($w, ['posts_per_page' => 6], []);
+$check(6 === $a['posts_per_page'], 'normal posts_per_page unchanged');
+$check(!is_admin(), 'test runs in a frontend-like context');
+$qc = ['terms' => 0, 'users' => 0, 'posts' => 0];
+add_filter('terms_pre_query', function ($r) use (&$qc) { $qc['terms']++; return $r; });
+add_filter('users_pre_query', function ($r) use (&$qc) { $qc['users']++; return $r; });
+add_filter('posts_pre_query', function ($r) use (&$qc) { $qc['posts']++; return $r; });
+foreach (['BlogGrid', 'BlogClassicGrid', 'PostCard', 'CardGrid', 'FeaturedGrid', 'SmartPostsList', 'PostCarousel', 'FeaturedSidebar'] as $name) {
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
+    $qc = ['terms' => 0, 'users' => 0, 'posts' => 0];
+    (new $class(['id' => 'q' . $name, 'elType' => 'widget', 'widgetType' => 'x', 'settings' => []], []))->get_settings_for_display();
+    $check(0 === array_sum($qc), "$name runs no term/user/post queries to prepare settings on the frontend");
+}
+foreach (['BlogGrid', 'BlogClassicGrid', 'PostCard', 'CardGrid', 'FeaturedGrid', 'SmartPostsList', 'PostCarousel', 'FeaturedSidebar', 'TaxonomyList', 'TaxonomySlider'] as $name) {
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
+    $check(in_array('blogkit-elementor-style', (new $class())->get_style_depends(), true), "$name loads the stylesheet through get_style_depends");
+}
+$check(false === wp_style_is('blogkit-elementor-style', 'enqueued'), 'stylesheet is not enqueued globally');
+define('WP_UNINSTALL_PLUGIN', 'blogkit/blogkit.php');
+update_option('blogkit_accent_color', '#123456');
+update_option('blogkit_delete_data', 0);
+include BLOGKIT_PATH . 'uninstall.php';
+$check('#123456' === get_option('blogkit_accent_color'), 'uninstall keeps data when the delete option is off');
+update_option('blogkit_delete_data', 1);
+include BLOGKIT_PATH . 'uninstall.php';
+$check(false === get_option('blogkit_accent_color') && false === get_option('blogkit_delete_data'), 'uninstall removes data when the delete option is on');
 exit($fail ? 1 : 0);
