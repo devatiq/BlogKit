@@ -63,6 +63,7 @@ $uid = 'blogkit-pc-' . sanitize_key($this->get_id());
                 ?>
                 <div class="swiper-slide">
                     <article class="blogkit-pc-card">
+                        <?php $this->blogkit_render_format_badge($settings); ?>
                         <?php if ('yes' === ($settings['show_image'] ?? 'yes')) : ?>
                             <a class="blogkit-pc-thumb" href="<?php echo esc_url(get_permalink()); ?>" tabindex="-1" aria-hidden="true">
                                 <?php

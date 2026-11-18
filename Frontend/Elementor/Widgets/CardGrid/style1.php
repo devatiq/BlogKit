@@ -51,6 +51,7 @@ if ($query->have_posts()):
         <!-- single blog -->
         <div class="blogkit-card-grid-item">
             <div class="blogkit-card-grid-header">
+                <?php $this->blogkit_render_format_badge($settings); ?>
                 <!-- Thumbnail -->
                 <?php
                 $fallback_enabled = ( 'yes' === ( $settings['enable_fallback_thumbnail'] ?? 'yes' ) );

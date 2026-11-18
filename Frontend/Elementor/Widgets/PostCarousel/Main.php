@@ -133,6 +133,8 @@ class Main extends Widget_Base
             'default' => 'yes',
         ]);
 
+        $this->blogkit_register_format_badge_control();
+
         $this->add_control('show_meta', [
             'label' => esc_html__('Date and Author', 'blogkit'),
             'type' => Controls_Manager::SWITCHER,

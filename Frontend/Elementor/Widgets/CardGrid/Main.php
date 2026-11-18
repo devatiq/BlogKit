@@ -208,6 +208,7 @@ class Main extends Widget_Base
         $this->blogkit_register_pagination_controls(['layout_style' => 'style_1']);
         $this->blogkit_register_filter_controls(['layout_style' => 'style_1']);
         $this->blogkit_register_reading_time_controls(['layout_style' => 'style_1']);
+        $this->blogkit_register_format_badge_control(['layout_style' => 'style_1']);
 
         $this->end_controls_section();
 

@@ -144,4 +144,32 @@ $check(false !== strpos(\BlogKit\Admin\Settings::fallback_image(), 'placeholder.
 update_option('blogkit_fallback_image', 'https://example.com/fb.jpg');
 $check('https://example.com/fb.jpg' === \BlogKit\Admin\Settings::fallback_image(), 'fallback image setting is used');
 delete_option('blogkit_fallback_image');
+// Format badge and accent color.
+foreach (['PostCard', 'CardGrid', 'PostCarousel'] as $name) {
+    $class = "\BlogKit\Frontend\Elementor\Widgets\\$name\Main";
+    $check(isset((new $class())->get_controls()['blogkit_show_format_badge']), "$name has format badge control");
+}
+$fbm = new ReflectionMethod($w, 'blogkit_render_format_badge');
+$fbm->setAccessible(true);
+$vp = wp_insert_post(['post_title' => 'BK video post', 'post_status' => 'publish']);
+set_post_format($vp, 'video');
+$sp = wp_insert_post(['post_title' => 'BK standard post', 'post_status' => 'publish']);
+$GLOBALS['post'] = get_post($vp);
+setup_postdata($GLOBALS['post']);
+ob_start();
+$fbm->invoke($w, ['blogkit_show_format_badge' => 'yes']);
+$h = ob_get_clean();
+$check(false !== strpos($h, 'blogkit-format-video') && false !== strpos($h, 'Video'), 'video post shows Video badge');
+ob_start();
+$fbm->invoke($w, ['blogkit_show_format_badge' => '']);
+$check('' === ob_get_clean(), 'badge off prints nothing');
+$GLOBALS['post'] = get_post($sp);
+setup_postdata($GLOBALS['post']);
+ob_start();
+$fbm->invoke($w, ['blogkit_show_format_badge' => 'yes']);
+$check('' === ob_get_clean(), 'standard post has no badge');
+wp_reset_postdata();
+wp_delete_post($vp, true);
+wp_delete_post($sp, true);
+$check('#12ab9f' === \BlogKit\Admin\Settings::sanitize_color(' #12ab9f ') && '' === \BlogKit\Admin\Settings::sanitize_color('red; x') && '' === \BlogKit\Admin\Settings::sanitize_color(null), 'accent color sanitizer accepts hex only');
 exit($fail ? 1 : 0);

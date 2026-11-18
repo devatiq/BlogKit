@@ -13,6 +13,7 @@ class Settings
     const GROUP = 'blogkit_settings';
     const PAGE = 'blogkit';
     const FALLBACK_OPTION = 'blogkit_fallback_image';
+    const ACCENT_OPTION = 'blogkit_accent_color';
 
     public function __construct()
     {
@@ -72,6 +73,12 @@ class Settings
             'sanitize_callback' => 'esc_url_raw',
         ]);
 
+        register_setting(self::GROUP, self::ACCENT_OPTION, [
+            'type' => 'string',
+            'default' => '',
+            'sanitize_callback' => [__CLASS__, 'sanitize_color'],
+        ]);
+
         foreach (array_keys(self::widgets()) as $option) {
             register_setting(self::GROUP, $option, [
                 'type' => 'integer',
@@ -90,6 +97,18 @@ class Settings
     public static function sanitize_toggle($value)
     {
         return empty($value) ? 0 : 1;
+    }
+
+    /**
+     * Hex color or empty string.
+     *
+     * @param mixed $value Submitted value.
+     * @return string
+     */
+    public static function sanitize_color($value)
+    {
+        $color = sanitize_hex_color(is_string($value) ? trim($value) : '');
+        return $color ? $color : '';
     }
 
     public function action_links($links)
@@ -126,6 +145,13 @@ class Settings
                         <td>
                             <input type="url" class="regular-text" id="<?php echo esc_attr(self::FALLBACK_OPTION); ?>" name="<?php echo esc_attr(self::FALLBACK_OPTION); ?>" value="<?php echo esc_attr((string) get_option(self::FALLBACK_OPTION, '')); ?>" placeholder="https://">
                             <p class="description"><?php echo esc_html__('Image URL used by the Post Carousel for posts without a featured image. Leave empty for the built-in placeholder.', 'blogkit'); ?></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row"><label for="<?php echo esc_attr(self::ACCENT_OPTION); ?>"><?php echo esc_html__('Accent color', 'blogkit'); ?></label></th>
+                        <td>
+                            <input type="text" class="small-text" id="<?php echo esc_attr(self::ACCENT_OPTION); ?>" name="<?php echo esc_attr(self::ACCENT_OPTION); ?>" value="<?php echo esc_attr((string) get_option(self::ACCENT_OPTION, '')); ?>" placeholder="#1d9fb0" maxlength="7" pattern="#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?">
+                            <p class="description"><?php echo esc_html__('Hex color (for example #1d9fb0) for the load more button, filter tabs and the Post Carousel. Leave empty for the default.', 'blogkit'); ?></p>
                         </td>
                     </tr>
                 </table>

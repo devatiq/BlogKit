@@ -50,6 +50,7 @@ if ($query->have_posts()):
         ?>
         <!-- single blog -->
         <div class="blogkit-post-card-item">
+            <?php $this->blogkit_render_format_badge($settings); ?>
             <!-- Thumbnail -->
             <?php if (has_post_thumbnail()): ?>
                 <a class="blogkit-post-card-thumbnail" href="<?php the_permalink(); ?>">

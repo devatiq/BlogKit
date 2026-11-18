@@ -579,6 +579,49 @@ trait QueryControls
     }
 
     /**
+     * Register the post format badge control.
+     *
+     * @param array $condition Optional Elementor condition for the control.
+     */
+    protected function blogkit_register_format_badge_control(array $condition = [])
+    {
+        $this->add_control(
+            'blogkit_show_format_badge',
+            [
+                'label' => esc_html__('Post Format Badge', 'blogkit'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'blogkit'),
+                'label_off' => esc_html__('Hide', 'blogkit'),
+                'return_value' => 'yes',
+                'default' => '',
+                'description' => esc_html__('Shows Video, Audio, Gallery, etc. on posts that use a non-standard post format.', 'blogkit'),
+                'condition' => $condition,
+            ]
+        );
+    }
+
+    /**
+     * Output the post format badge for the current post (inside the loop).
+     *
+     * @param array $settings Widget settings.
+     */
+    protected function blogkit_render_format_badge(array $settings)
+    {
+        if ('yes' !== ($settings['blogkit_show_format_badge'] ?? '')) {
+            return;
+        }
+        $format = get_post_format();
+        if (!$format || 'standard' === $format) {
+            return;
+        }
+        printf(
+            '<span class="blogkit-format-badge blogkit-format-%1$s">%2$s</span>',
+            esc_attr(sanitize_html_class($format)),
+            esc_html(get_post_format_string($format))
+        );
+    }
+
+    /**
      * Public post types (attachments excluded).
      */
     private function blogkit_get_post_type_options()
