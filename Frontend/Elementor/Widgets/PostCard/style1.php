@@ -10,6 +10,9 @@ use Elementor\Icons_Manager;
 
 $settings = $this->get_settings_for_display();
 
+
+$this->blogkit_render_filter_bar($settings);
+
 // Pagination setup
 $paged = 1;
 if (get_query_var('paged')) {
@@ -31,6 +34,7 @@ if (!empty($settings['category'])) {
     $args['category_name'] = implode(',', $settings['category']);
 }
 $args = $this->blogkit_apply_query_args($args, $settings);
+$args = $this->blogkit_apply_filter_args($args, $settings);
 
 $query = new WP_Query($args);
 

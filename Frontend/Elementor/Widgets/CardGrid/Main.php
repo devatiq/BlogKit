@@ -17,7 +17,7 @@ class Main extends Widget_Base
 
     public function get_script_depends()
     {
-        return ['blogkit-load-more'];
+        return ['blogkit-load-more', 'blogkit-filter'];
     }
 
     public function get_name()
@@ -206,6 +206,7 @@ class Main extends Widget_Base
 
         $this->blogkit_register_query_controls();
         $this->blogkit_register_pagination_controls(['layout_style' => 'style_1']);
+        $this->blogkit_register_filter_controls(['layout_style' => 'style_1']);
         $this->blogkit_register_reading_time_controls(['layout_style' => 'style_1']);
 
         $this->end_controls_section();

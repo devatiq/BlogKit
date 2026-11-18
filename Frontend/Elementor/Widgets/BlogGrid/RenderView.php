@@ -5,6 +5,8 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * Compatible with any theme, styled like abcblog theme
  */
     $settings = $this->get_settings_for_display();
+
+    $this->blogkit_render_filter_bar($settings);
 // Pagination setup
 $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
 
@@ -20,6 +22,7 @@ if (!empty($settings['category'])) {
     $args['category_name'] = implode(',', $settings['category']);
 }
 $args = $this->blogkit_apply_query_args($args, $settings);
+$args = $this->blogkit_apply_filter_args($args, $settings);
 
 $query = new WP_Query($args);
 

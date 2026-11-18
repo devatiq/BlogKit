@@ -358,6 +358,196 @@ trait QueryControls
     }
 
     /**
+     * Register the category filter tabs and live search controls.
+     *
+     * @param array $condition Optional Elementor condition for the controls.
+     */
+    protected function blogkit_register_filter_controls(array $condition = [])
+    {
+        $this->add_control(
+            'blogkit_show_filter',
+            [
+                'label' => esc_html__('Category Filter Tabs', 'blogkit'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'blogkit'),
+                'label_off' => esc_html__('Hide', 'blogkit'),
+                'return_value' => 'yes',
+                'default' => '',
+                'description' => esc_html__('Shows the selected categories (or the most used ones) as tabs.', 'blogkit'),
+                'condition' => $condition,
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_filter_all_text',
+            [
+                'label' => esc_html__('"All" Tab Text', 'blogkit'),
+                'type' => Controls_Manager::TEXT,
+                'default' => esc_html__('All', 'blogkit'),
+                'condition' => $condition + ['blogkit_show_filter' => 'yes'],
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_show_search',
+            [
+                'label' => esc_html__('Live Search', 'blogkit'),
+                'type' => Controls_Manager::SWITCHER,
+                'label_on' => esc_html__('Show', 'blogkit'),
+                'label_off' => esc_html__('Hide', 'blogkit'),
+                'return_value' => 'yes',
+                'default' => '',
+                'condition' => $condition,
+            ]
+        );
+
+        $this->add_control(
+            'blogkit_search_placeholder',
+            [
+                'label' => esc_html__('Search Placeholder', 'blogkit'),
+                'type' => Controls_Manager::TEXT,
+                'default' => esc_html__('Search posts...', 'blogkit'),
+                'condition' => $condition + ['blogkit_show_search' => 'yes'],
+            ]
+        );
+    }
+
+    /**
+     * Query-string parameter names for this widget instance.
+     *
+     * @return array{cat:string,search:string}
+     */
+    private function blogkit_filter_params()
+    {
+        $id = sanitize_key($this->get_id());
+        return ['cat' => 'blogkit_f_' . $id, 'search' => 'blogkit_s_' . $id];
+    }
+
+    /**
+     * Category slugs offered as filter tabs.
+     *
+     * @param array $settings Widget settings.
+     * @return array<string,string> slug => name
+     */
+    private function blogkit_get_filter_terms(array $settings)
+    {
+        $args = ['taxonomy' => 'category', 'hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC'];
+        if (!empty($settings['category']) && is_array($settings['category'])) {
+            $args['slug'] = array_map('sanitize_title', $settings['category']);
+        }
+        $terms = get_terms($args);
+        $out = [];
+        if (is_array($terms)) {
+            foreach ($terms as $term) {
+                $out[$term->slug] = $term->name;
+            }
+        }
+        return $out;
+    }
+
+    /**
+     * Current filter values from the query string (validated).
+     *
+     * @param array $settings Widget settings.
+     * @return array{cat:string,search:string}
+     */
+    private function blogkit_get_filter_state(array $settings)
+    {
+        $params = $this->blogkit_filter_params();
+        $state = ['cat' => '', 'search' => ''];
+
+        // Read-only display filters: no state is changed, so no nonce is needed.
+        if ('yes' === ($settings['blogkit_show_filter'] ?? '') && isset($_GET[$params['cat']])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $slug = sanitize_title(wp_unslash($_GET[$params['cat']])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            if ('' !== $slug && isset($this->blogkit_get_filter_terms($settings)[$slug])) {
+                $state['cat'] = $slug;
+            }
+        }
+        if ('yes' === ($settings['blogkit_show_search'] ?? '') && isset($_GET[$params['search']])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $term = sanitize_text_field(wp_unslash($_GET[$params['search']])); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+            $state['search'] = function_exists('mb_substr') ? mb_substr($term, 0, 100) : substr($term, 0, 100);
+        }
+
+        return $state;
+    }
+
+    /**
+     * Apply the active filter tab and search term to WP_Query arguments.
+     *
+     * @param array $args     Query arguments.
+     * @param array $settings Widget settings.
+     * @return array
+     */
+    protected function blogkit_apply_filter_args(array $args, array $settings)
+    {
+        $state = $this->blogkit_get_filter_state($settings);
+        if ('' !== $state['cat']) {
+            $args['category_name'] = $state['cat'];
+        }
+        if ('' !== $state['search']) {
+            $args['s'] = $state['search'];
+        }
+        return $args;
+    }
+
+    /**
+     * Print the filter tabs and search box. Call before the query output.
+     *
+     * @param array $settings Widget settings.
+     */
+    protected function blogkit_render_filter_bar(array $settings)
+    {
+        $show_filter = 'yes' === ($settings['blogkit_show_filter'] ?? '');
+        $show_search = 'yes' === ($settings['blogkit_show_search'] ?? '');
+        if (!$show_filter && !$show_search) {
+            return;
+        }
+
+        $params = $this->blogkit_filter_params();
+        $state = $this->blogkit_get_filter_state($settings);
+
+        printf(
+            '<div class="blogkit-filter-bar" data-cat-param="%1$s" data-search-param="%2$s" data-cat="%3$s">',
+            esc_attr($params['cat']),
+            esc_attr($params['search']),
+            esc_attr($state['cat'])
+        );
+
+        if ($show_filter) {
+            $base = remove_query_arg([$params['cat'], 'paged']);
+            echo '<ul class="blogkit-filter-tabs">';
+            $all = !empty($settings['blogkit_filter_all_text']) ? $settings['blogkit_filter_all_text'] : __('All', 'blogkit');
+            printf(
+                '<li><a href="%1$s" class="blogkit-filter-tab%2$s" data-slug="">%3$s</a></li>',
+                esc_url($base),
+                '' === $state['cat'] ? ' is-active' : '',
+                esc_html($all)
+            );
+            foreach ($this->blogkit_get_filter_terms($settings) as $slug => $name) {
+                printf(
+                    '<li><a href="%1$s" class="blogkit-filter-tab%2$s" data-slug="%3$s">%4$s</a></li>',
+                    esc_url(add_query_arg($params['cat'], $slug, $base)),
+                    $slug === $state['cat'] ? ' is-active' : '',
+                    esc_attr($slug),
+                    esc_html($name)
+                );
+            }
+            echo '</ul>';
+        }
+
+        if ($show_search) {
+            $placeholder = !empty($settings['blogkit_search_placeholder']) ? $settings['blogkit_search_placeholder'] : __('Search posts...', 'blogkit');
+            printf(
+                '<input type="search" class="blogkit-filter-search" value="%1$s" placeholder="%2$s" aria-label="%2$s" autocomplete="off">',
+                esc_attr($state['search']),
+                esc_attr($placeholder)
+            );
+        }
+
+        echo '</div>';
+    }
+
+    /**
      * Public post types (attachments excluded).
      */
     private function blogkit_get_post_type_options()

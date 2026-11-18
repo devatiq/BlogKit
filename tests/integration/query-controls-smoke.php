@@ -67,4 +67,44 @@ $check(2 === $rt->invoke($w, $p1, 9999), 'wpm clamped to 400 max (450 words = 2 
 $check(1 === $rt->invoke($w, $p2, 200), 'empty post = 1 min minimum');
 $check(2 === $rt->invoke($w, $p3, 200), 'unicode (Bengali) words counted (300 words = 2 min)');
 foreach ([$p1, $p2, $p3] as $pid) { wp_delete_post($pid, true); }
+foreach (['BlogGrid', 'PostCard', 'CardGrid', 'SmartPostsList'] as $name) {
+    $class = "\\BlogKit\\Frontend\\Elementor\\Widgets\\$name\\Main";
+    $c = (new $class())->get_controls();
+    $check(isset($c['blogkit_show_filter'], $c['blogkit_show_search'], $c['blogkit_filter_all_text'], $c['blogkit_search_placeholder']), "$name has filter/search controls");
+    $check(in_array('blogkit-filter', (new $class())->get_script_depends(), true), "$name depends on filter script");
+}
+$fw = new \BlogKit\Frontend\Elementor\Widgets\BlogGrid\Main(['id' => 'ft1', 'elType' => 'widget', 'widgetType' => 'blogkit-blog-grid', 'settings' => []], []);
+$fa = new ReflectionMethod($fw, 'blogkit_apply_filter_args');
+$fa->setAccessible(true);
+$cat = wp_insert_term('BK Filter Test', 'category');
+$cat_slug = get_term($cat['term_id'])->slug;
+$pid = wp_insert_post(['post_title' => 'BK filter post', 'post_status' => 'publish', 'post_category' => [$cat['term_id']]]);
+$on = ['blogkit_show_filter' => 'yes', 'blogkit_show_search' => 'yes'];
+$_GET['blogkit_f_ft1'] = $cat_slug;
+$_GET['blogkit_s_ft1'] = '  needle <b>x</b> ';
+$a = $fa->invoke($fw, ['category_name' => 'other'], $on);
+$check($a['category_name'] === $cat_slug, 'valid filter category overrides widget category');
+$check($a['s'] === 'needle x', 'search term sanitized');
+$_GET['blogkit_f_ft1'] = 'does-not-exist';
+$a = $fa->invoke($fw, ['category_name' => 'other'], $on);
+$check($a['category_name'] === 'other', 'unknown category slug ignored');
+$_GET['blogkit_s_ft1'] = str_repeat('a', 300);
+$a = $fa->invoke($fw, [], $on);
+$check(strlen($a['s']) === 100, 'search term limited to 100 chars');
+$a = $fa->invoke($fw, [], ['blogkit_show_filter' => '', 'blogkit_show_search' => '']);
+$check([] === $a, 'filters ignored when switches are off');
+$_GET['blogkit_f_other'] = $cat_slug;
+unset($_GET['blogkit_f_ft1'], $_GET['blogkit_s_ft1']);
+$a = $fa->invoke($fw, [], $on);
+$check([] === $a, 'params of another widget instance ignored');
+$fb = new ReflectionMethod($fw, 'blogkit_render_filter_bar');
+$fb->setAccessible(true);
+$_GET['blogkit_f_ft1'] = $cat_slug;
+ob_start();
+$fb->invoke($fw, $on + ['category' => [$cat_slug]]);
+$html = ob_get_clean();
+$check(false !== strpos($html, 'blogkit-filter-bar') && false !== strpos($html, 'is-active') && false !== strpos($html, 'blogkit-filter-search'), 'filter bar renders tabs and search');
+$_GET = [];
+wp_delete_post($pid, true);
+wp_delete_term($cat['term_id'], 'category');
 exit($fail ? 1 : 0);

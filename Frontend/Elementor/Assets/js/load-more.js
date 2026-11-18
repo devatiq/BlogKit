@@ -95,6 +95,11 @@
         document.querySelectorAll('.blogkit-load-more-wrap[data-type="infinite"]').forEach(observe);
     }
 
+    // Used by filter.js after it swaps the results.
+    window.blogkitScanLoadMore = function (root) {
+        (root || document).querySelectorAll('.blogkit-load-more-wrap[data-type="infinite"]').forEach(observe);
+    };
+
     if ('loading' === document.readyState) {
         document.addEventListener('DOMContentLoaded', init);
     } else {
