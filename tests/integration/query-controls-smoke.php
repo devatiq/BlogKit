@@ -107,4 +107,14 @@ $check(false !== strpos($html, 'blogkit-filter-bar') && false !== strpos($html, 
 $_GET = [];
 wp_delete_post($pid, true);
 wp_delete_term($cat['term_id'], 'category');
+$pc = new \BlogKit\Frontend\Elementor\Widgets\PostCarousel\Main();
+$c = $pc->get_controls();
+$check('blogkit-post-carousel' === $pc->get_name(), 'Post Carousel widget name');
+$check(isset($c['slides_per_view'], $c['space_between'], $c['autoplay'], $c['loop'], $c['blogkit_tags'], $c['blogkit_schema'], $c['blogkit_date_range']), 'Post Carousel has slider + query controls');
+$check(in_array('blogkit-post-carousel', $pc->get_script_depends(), true), 'Post Carousel script dependency');
+$opts = array_keys(\BlogKit\Admin\Settings::widgets());
+$conf = file_get_contents(BLOGKIT_PATH . 'Frontend/Elementor/Configuration.php');
+$missing = array_filter($opts, function ($o) use ($conf) { return false === strpos($conf, "'$o'"); });
+$check(10 === count($opts) && [] === $missing, 'Settings page lists every widget option used by Configuration');
+$check(0 === \BlogKit\Admin\Settings::sanitize_toggle(null) && 0 === \BlogKit\Admin\Settings::sanitize_toggle('') && 1 === \BlogKit\Admin\Settings::sanitize_toggle('1'), 'settings toggle sanitizer');
 exit($fail ? 1 : 0);

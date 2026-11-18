@@ -200,6 +200,7 @@ class Configuration
             'blogkit_featured_grid' => 'FeaturedGrid\Main',
             'smart_posts_list' => 'SmartPostsList\Main',
             'taxonomy_slider' => 'TaxonomySlider\Main',
+            'blogkit_post_carousel' => 'PostCarousel\Main',
 
         ];
 

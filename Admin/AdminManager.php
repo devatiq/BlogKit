@@ -7,8 +7,13 @@ if (!defined('ABSPATH')) {
 
 class AdminManager
 {
+    /**
+     * @var Settings
+     */
+    protected $settings;
+
     public function __construct()
     {
-       
+        $this->settings = new Settings();
     }
 }
